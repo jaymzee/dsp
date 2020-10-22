@@ -7,18 +7,22 @@ extern "C" {
 
 int main(int argc, char *argv[])
 {
+    const char *infile, *outfile;
+
     if (argc != 3) {
         fprintf(stderr, "Usage: wavReverb infile outfile\n");
         return EXIT_FAILURE;
     }
+    infile = argv[1];
+    outfile = argv[2];
 
-    CircularFilter fs(5000);
-    fs.b[1] = 0.4;
-    fs.b[3500] = 0.4;
-    fs.a[3000] = 0.6;
+    CircularFilter f(5000);
+    f.b[1] = 0.4;
+    f.b[3500] = 0.4;
+    f.a[3000] = 0.6;
 
-    int rv = wave_filter(argv[1], argv[2],
-                         CircularFilter::procsamp, &fs,
+    int rv = wave_filter(infile, outfile,
+                         (filter_func)CircularFilter::sample, &f,
                          WAVE_PCM, 2.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;

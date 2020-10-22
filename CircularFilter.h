@@ -23,7 +23,8 @@ public:
     CircularFilter& operator++();   /* retreat delay line by one sample */
     double& operator[](unsigned n); /* reference to tap[n] */
     unsigned length();              /* length of delay line */
-    static filter_func procsamp;    /* process one sample through filter */
+    /* process one sample through filter */
+    static float sample(void *state, float x);
 };
 
 #endif /* CIRCULARFILTER_H */

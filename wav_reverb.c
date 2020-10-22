@@ -10,7 +10,9 @@ double   a_val[1]  = {0.6};
 
 int main(int argc, char *argv[])
 {
-    struct circfilt_state *fs;
+    const char *infile;
+    const char *outfile;
+    struct cirfltr *fs;
     int rv;
 
     if (argc != 3) {
@@ -18,8 +20,12 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    fs = circfilt_create(5000, 2, b_indx, b_val, 2, a_indx, a_val);
-    rv = wave_filter(argv[1], argv[2], circfilt_procsamp, fs, WAVE_PCM, 2.0);
+    infile = argv[1];
+    outfile = argv[2];
+
+    fs = cirfltr_create(5000, 2, b_indx, b_val, 2, a_indx, a_val);
+    rv = wave_filter(infile, outfile, (filter_func)cirfltr_sample, fs,
+                     WAVE_PCM, 2.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

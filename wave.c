@@ -23,7 +23,7 @@ static long read_fmt(struct wave *fmt, const char *fn, FILE *fp)
     }
     if (bytecount < fmt->fmt_size + 4) {
         long skip = fmt->fmt_size + 4 - bytecount;
-        fprintf(stderr, 
+        fprintf(stderr,
                 "%s: skipping extra %ld bytes at end of chunk fmt\n", 
                 fn, skip);
         fseek(fp, skip, SEEK_CUR);
@@ -194,8 +194,8 @@ static double clamp(double d, double min, double max) {
     return t > max ? max : t;
 }
 
-static void filter_pcm2float(FILE *fpi, FILE *fpo, 
-                             filter_func *f, void *state, 
+static void filter_pcm2float(FILE *fpi, FILE *fpo,
+                             filter_func f, void *state,
                              uint32_t Nin, uint32_t Nout)
 {
     float x, y;
@@ -205,19 +205,19 @@ static void filter_pcm2float(FILE *fpi, FILE *fpo,
     while (n < Nin) {
         n += fread(&samp16, 2, 1, fpi);
         x = samp16 / 32767.0;
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         fwrite(&y, 4, 1, fpo);
     }
     while (n < Nout) {
         n++;
         x = 0.0;
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         fwrite(&y, 4, 1, fpo);
     }
 }
 
-static void filter_pcm2pcm(FILE *fpi, FILE *fpo, 
-                           filter_func *f, void *state, 
+static void filter_pcm2pcm(FILE *fpi, FILE *fpo,
+                           filter_func f, void *state,
                            uint32_t Nin, uint32_t Nout)
 {
     float x, y;
@@ -227,22 +227,22 @@ static void filter_pcm2pcm(FILE *fpi, FILE *fpo,
     while (n < Nin) {
         n += fread(&samp16, 2, 1, fpi);
         x = samp16 / 32767.0;
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         samp16 = (int)(32768.5 + 32767.0 * y) - 32768;
         fwrite(&samp16, 2, 1, fpo);
     }
     while (n < Nout) {
         n++;
         x = 0.0;
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         samp16 = (int)(32768.5 + 32767.0 * y) - 32768;
         fwrite(&samp16, 2, 1, fpo);
     }
 }
 
 
-static void filter_float2float(FILE *fpi, FILE *fpo, 
-                               filter_func *f, void *state, 
+static void filter_float2float(FILE *fpi, FILE *fpo,
+                               filter_func f, void *state,
                                uint32_t Nin, uint32_t Nout)
 {
     float x, y;
@@ -250,19 +250,19 @@ static void filter_float2float(FILE *fpi, FILE *fpo,
 
     while (n < Nin) {
         n += fread(&x, 4, 1, fpi);
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         fwrite(&y, 4, 1, fpo);
     }
     while (n < Nout) {
         n++;
         x = 0.0;
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         fwrite(&y, 4, 1, fpo);
     }
 }
 
-static void filter_float2pcm(FILE *fpi, FILE *fpo, 
-                             filter_func *f, void *state, 
+static void filter_float2pcm(FILE *fpi, FILE *fpo,
+                             filter_func f, void *state,
                              uint32_t Nin, uint32_t Nout)
 {
     float x, y;
@@ -271,14 +271,14 @@ static void filter_float2pcm(FILE *fpi, FILE *fpo,
 
     while (n < Nin) {
         n += fread(&x, 4, 1, fpi);
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         samp16 = (int)(32768.5 + 32767.0 * y) - 32768;
         fwrite(&samp16, 2, 1, fpo);
     }
     while (n < Nout) {
         n++;
         x = 0.0;
-        y = clamp(f(x, state), -1.0, 1.0);
+        y = clamp(f(state, x), -1.0, 1.0);
         samp16 = (int)(32768.5 + 32767.0 * y) - 32768;
         fwrite(&samp16, 2, 1, fpo);
     }
@@ -301,8 +301,8 @@ static void filter_float2pcm(FILE *fpi, FILE *fpo,
  *        -3 could not parse file
  *        -4 unsupported file format
  */
-int wave_filter(const char *infile, const char *outfile, 
-                   filter_func *f, void *state, int format, double t)
+int wave_filter(const char *infile, const char *outfile,
+                filter_func f, void *state, int format, double t)
 {
     FILE *fpi, *fpo;
     struct wave fmti, fmto;

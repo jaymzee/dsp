@@ -14,10 +14,11 @@ struct Flanger
     double rate;    //rate of flanger
     double phase;   //current phase of flanger (time)
     Delay tap;      //delay line
-    static filter_func procsamp; //process one sample
+    //process one sample
+    static float sample(void *state, float x);
 };
 
-float Flanger::procsamp(float x, void *state)
+float Flanger::sample(void *state, float x)
 {
     Flanger &fl = *(Flanger *)state;
     const int N = fl.tap.length();
@@ -33,14 +34,17 @@ float Flanger::procsamp(float x, void *state)
 
 int main(int argc, char *argv[])
 {
+    const char *infile, *outfile;
+
     if (argc != 3) {
         fprintf(stderr, "Usage: wavFlanger infile outfile\n");
         return EXIT_FAILURE;
     }
+    infile = argv[1];
+    outfile = argv[2];
 
-    Flanger fl = {0.125, 0.0, Delay(200)};
-    int rv = wave_filter(argv[1], argv[2],
-                         Flanger::procsamp, &fl,
+    Flanger f = {0.125, 0.0, Delay(200)};
+    int rv = wave_filter(infile, outfile, (filter_func)Flanger::sample, &f,
                          WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;

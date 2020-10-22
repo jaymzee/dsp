@@ -1,11 +1,12 @@
-#ifndef CANFILT_H
-#define CANFILT_H
+#ifndef CANONICAL_FILTER_H
+#define CANONICAL_FILTER_H
 
 /* canonical filter for signal processing */
 
 #include "filter.h"
 
-struct canfilt_state {
+/* canonical filter state */
+struct canfltr {
     double *w;      /* delay line */
     double *a;      /* a coefficients - feedback */
     double *b;      /* b coefficients - feed forward */
@@ -13,13 +14,13 @@ struct canfilt_state {
 };
 
 /* allocate and initialize state object */
-struct canfilt_state *
-canfilt_create(unsigned N, double *b, double *a);
+struct canfltr *
+canfltr_create(unsigned N, double *b, double *a);
 
 /* free state object */
-void canfilt_destroy(struct canfilt_state *s);
+void canfltr_destroy(struct canfltr *s);
 
 /* process one sample through canonical filter */
-filter_func canfilt_procsamp;
+float canfltr_sample(struct canfltr *state, float x);
 
-#endif /* CANFILT_H */
+#endif /* CANONICAL_FILTER_H */

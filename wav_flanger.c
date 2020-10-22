@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     fl.rate = 0.125;
     fl.phase = 0.0;
     fl.delay = delay_create(200);
-    rv = wave_filter(argv[1], argv[2], flanger_procsamp, &fl, WAVE_PCM, 0.0);
+    rv = wave_filter(argv[1], argv[2], (filter_func)flanger_procsamp, &fl, WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

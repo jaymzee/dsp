@@ -3,18 +3,18 @@
 #include <string.h>
 
 /*
- * canfilt_create() - allocate and initialize a canonical filter
- * @N: length of delay line w (and a and b coeeficient arrays)
- * @b: b coefficent array (feed forward)
- * @a: a coefficent array (feedback)
+ * canfltr_create() - allocate and initialize a canonical filter
+ * N: length of delay line w (and a and b coeeficient arrays)
+ * b: b coefficent array (feed forward)
+ * a: a coefficent array (feedback)
  *
  * Return: the initialized state structure for the filter
  */
-struct canfilt_state *
-canfilt_create(unsigned N, double *b, double *a)
+struct canfltr *
+canfltr_create(unsigned N, double *b, double *a)
 {
-    struct canfilt_state *s;
-    s = malloc(sizeof(struct canfilt_state));
+    struct canfltr *s;
+    s = malloc(sizeof(struct canfltr));
     s->N = N;
     s->w = calloc(N, sizeof(double));
     s->a = calloc(N, sizeof(double));
@@ -26,10 +26,10 @@ canfilt_create(unsigned N, double *b, double *a)
 }
 
 /*
- * canfilt_destroy() - free memory allocated for canonical filter
- * @s: pointer to filter state
+ * canfltr_destroy() - free memory allocated for canonical filter
+ * s: pointer to filter state
  */
-void canfilt_destroy(struct canfilt_state *s)
+void canfltr_destroy(struct canfltr *s)
 {
     free(s->b);
     free(s->a);
@@ -38,19 +38,18 @@ void canfilt_destroy(struct canfilt_state *s)
 }
 
 /*
- * canfilt_procsamp() - process one sample through canonical filter
- * @x: input sample to process
- * @state: pointer to the state of the filter
+ * canfltr_sample() - process one sample through canonical filter
+ * x: input sample to process
+ * state: pointer to the state of the filter
  *
  * Return: output sample
  */
-float canfilt_procsamp(float x, void *state)
+float canfltr_sample(struct canfltr *state, float x)
 {
-    const struct canfilt_state *fs = state;
-    unsigned n, N = fs->N;
-    double *w = fs->w;
-    double *a = fs->a;
-    double *b = fs->b;
+    unsigned n, N = state->N;
+    double *w = state->w;
+    double *a = state->a;
+    double *b = state->b;
     double y, w0;
 
     w0 = x;

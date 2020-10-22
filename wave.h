@@ -37,7 +37,7 @@ int wave_dump(const char *filename);
 
 /* sample by sample process wav file */
 int wave_filter(const char *infile, const char *outfile,
-                   filter_func *f, void *state, int format, double t);
+                filter_func f, void *state, int format, double t);
 
 #define WAVE_PCM     1
 #define WAVE_FLOAT   3

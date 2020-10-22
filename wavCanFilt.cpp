@@ -13,13 +13,17 @@ CanonicalFilter fs = {
 
 int main(int argc, char *argv[])
 {
+    const char *infile, *outfile;
+
     if (argc != 3) {
         fprintf(stderr, "Usage: wavCanFilt infile outfile\n");
         return EXIT_FAILURE;
     }
+    infile = argv[1];
+    outfile = argv[2];
 
-    int rv = wave_filter(argv[1], argv[2],
-                         CanonicalFilter::procsamp, &fs,
+    int rv = wave_filter(infile, outfile,
+                         (filter_func)CanonicalFilter::sample, &fs,
                          WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;

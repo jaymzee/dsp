@@ -7,7 +7,7 @@
  *
  * Return: output sample
  */
-float CanonicalFilter::procsamp(float x, void *state)
+float CanonicalFilter::sample(void *state, float x)
 {
     CanonicalFilter &fs = *(CanonicalFilter *)state;
     double y, w0;

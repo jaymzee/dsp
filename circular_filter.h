@@ -1,5 +1,5 @@
-#ifndef CIRCFILT_H
-#define CIRCFILT_H
+#ifndef CIRCULAR_FILTER_H
+#define CIRCULAR_FILTER_H
 
 /*
  * circular buffer implementation of a canonical filter 
@@ -10,7 +10,8 @@
 
 #include "filter.h"
 
-struct circfilt_state {
+/* circular filter state */
+struct cirfltr {
     double *w;          /* delay line */
     double *a_val;      /* a coefficient values */
     double *b_val;      /* b coefficient values */
@@ -23,23 +24,23 @@ struct circfilt_state {
 };
 
 /* allocate and initialize */
-struct circfilt_state *
-circfilt_create(unsigned N, unsigned Nb, unsigned *b_indx, double *b_val,
-                            unsigned Na, unsigned *a_indx, double *a_val);
+struct cirfltr *
+cirfltr_create(unsigned N, unsigned Nb, unsigned *b_indx, double *b_val,
+               unsigned Na, unsigned *a_indx, double *a_val);
 
 /* free state object */
-void circfilt_destroy(struct circfilt_state *s);
+void cirfltr_destroy(struct cirfltr *s);
 
 /* decrement offset within w buffer (advance delay line by one) */
-void circfilt_dec(struct circfilt_state *s);
+void cirfltr_dec(struct cirfltr *s);
 
 /* increment offset within w buffer */
-void circfilt_inc(struct circfilt_state *s);
+void cirfltr_inc(struct cirfltr *s);
 
 /* return pointer to w[n] while handling wrapping */
-double * circfilt_w(struct circfilt_state *s, unsigned n);
+double * cirfltr_w(struct cirfltr *s, unsigned n);
 
 /* process one sample through circular filter */
-filter_func circfilt_procsamp;
+float cirfltr_sample(struct cirfltr *s, float x);
 
-#endif /* CIRCFILT_H */
+#endif /* CIRCULAR_FILTER_H */

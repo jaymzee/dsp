@@ -57,21 +57,21 @@ unsigned CircularFilter::length()
  *
  * Return: output sample
  */
-float CircularFilter::procsamp(float x, void *state)
+float CircularFilter::sample(void *state, float x)
 {
-    CircularFilter &fs = *(CircularFilter *)state;
+    CircularFilter &f = *(CircularFilter *)state;
     double y, w0;
-    
+
     w0 = x;
-    for (auto it : fs.a)
-        w0 -= it.second * fs[it.first];
-    fs[0] = w0;
+    for (auto it : f.a)
+        w0 -= it.second * f[it.first];
+    f[0] = w0;
 
     y = 0.0;
-    for (auto it : fs.b) 
-        y += it.second * fs[it.first];
+    for (auto it : f.b)
+        y += it.second * f[it.first];
 
-    --fs;
+    --f;
 
     return y;
 }
