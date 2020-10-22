@@ -4,13 +4,13 @@
 
 /*
  * cirfltr_create() - allocate and initialize a circular filter
- * @N:      length of w
- * @Nb:     length of b;
- * @b_val:  b values;
- * @b_indx: b indices;
- * @Na:     length of a;
- * @a_val:  a values;
- * @a_indx: a indices;
+ * N:      length of w
+ * Nb:     length of b;
+ * b_val:  b values;
+ * b_indx: b indices;
+ * Na:     length of a;
+ * a_val:  a values;
+ * a_indx: a indices;
  *
  * Return: the initialized state structure for the filter
  */
@@ -52,7 +52,7 @@ void cirfltr_destroy(struct cirfltr *s)
 
 /*
  * cirfltr_dec() - decrement offset of w buffer (advance delay line by one)
- * @s: pointer to filter state
+ * s: pointer to filter state
  *
  * properly wrap offset so that it doesn't fall off the edge of buffer
  */
@@ -65,7 +65,7 @@ void cirfltr_dec(struct cirfltr *s)
 
 /*
  * cirfltr_inc() - increment offset of w buffer
- * @s: pointer to filter state
+ * s: pointer to filter state
  *
  * properly wrap offset so that it doesn't fall off the edge of buffer
  */
@@ -78,8 +78,8 @@ void cirfltr_inc(struct cirfltr *s)
 
 /*
  * cirfltr_w() - return pointer to w[n] while handling wrapping
- * @s: pointer to filter state
- * @n: index into w
+ * s: pointer to filter state
+ * n: index into w
  *
  * Return: pointer to w[n]
  */
@@ -90,8 +90,8 @@ double * cirfltr_w(struct cirfltr *s, unsigned n)
 
 /*
  * cirfltr_sample() - process one sample through the canonical filter
- * @x: input sample to process
- * @state: pointer to the state of the filter
+ * x: input sample to process
+ * state: pointer to the state of the filter
  *
  * Return: output sample
  */

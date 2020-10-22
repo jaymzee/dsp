@@ -19,12 +19,16 @@ public:
     std::map<unsigned, double> b;   /* feedforward coefficients */
     std::map<unsigned, double> a;   /* feedback coefficients */
     CircularFilter(unsigned length);
-    CircularFilter& operator--();   /* advance delay line by one sample */
-    CircularFilter& operator++();   /* retreat delay line by one sample */
-    double& operator[](unsigned n); /* reference to tap[n] */
+    void decrement();               /* advance delay line by one sample */
+    void increment();               /* retreat delay line by one sample */
+    double& tap(unsigned n);        /* reference to tap[n] */
     unsigned length();              /* length of delay line */
-    /* process one sample through filter */
-    static float sample(void *state, float x);
+    float sample(float x);          /* process one sample through filter */
+
+    /* filter_func callback for wave_filter() */
+    inline static float sample_(CircularFilter *cf, float x) {
+        return cf->sample(x);
+    }
 };
 
 #endif /* CIRCULARFILTER_H */

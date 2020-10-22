@@ -1,5 +1,5 @@
-#ifndef FRACDELAY_H
-#define FRACDELAY_H
+#ifndef FRACTIONAL_DELAY_H
+#define FRACTIONAL_DELAY_H
 
 /*
  * circular buffer implementation of a fractional delay line 
@@ -29,4 +29,4 @@ double delay_w(struct delay_state *s, double n);
 /* return pointer to w[0] */
 double *delay_w0(struct delay_state *s);
 
-#endif /* FRACDELAY_H */
+#endif /* FRACTIONAL_DELAY_H */

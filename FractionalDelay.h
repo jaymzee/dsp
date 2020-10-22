@@ -1,10 +1,10 @@
-#ifndef DELAY_H
-#define DELAY_H
+#ifndef FRACTIONALDELAY_H
+#define FRACTIONALDELAY_H
 
 #include <vector>
 
 /*
- * circular buffer implementation of a fractional delay line (CPP) 
+ * circular buffer implementation of a fractional delay line (CPP)
  */
 
 class Delay {
@@ -19,4 +19,4 @@ public:
     unsigned length();           /* length of delay line */
 };
 
-#endif /* DELAY_H */
+#endif /* FRACTIONALDELAY_H */

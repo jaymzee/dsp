@@ -1,28 +1,27 @@
 #include "CanonicalFilter.h"
 
 /*
- * CanonicalFilter::procsamp() - process one sample through canonical filter
- * @x: input sample to process
- * @state: pointer to the state of the filter (CanonicalFilter)
+ * CanonicalFilter::sample() - process one sample through canonical filter
+ * x: input sample to process
  *
  * Return: output sample
  */
-float CanonicalFilter::sample(void *state, float x)
+float CanonicalFilter::sample(float x)
 {
-    CanonicalFilter &fs = *(CanonicalFilter *)state;
     double y, w0;
 
     w0 = x;
-    for (int n = fs.a.size() - 1; n > 0; n--)
-        w0 -= fs.a[n] * fs.w[n];
-    fs.w[0] = w0;
+    for (int n = a.size() - 1; n > 0; n--)
+        w0 -= a[n] * w[n];
+    w[0] = w0;
 
     y = 0.0;
-    for (int n = fs.b.size() - 1; n >= 0; n--)
-        y += fs.b[n] * fs.w[n];
+    for (int n = b.size() - 1; n >= 0; n--)
+        y += b[n] * w[n];
 
-    for (int n = fs.w.size() - 1; n > 0; n--)
-        fs.w[n] = fs.w[n - 1];
+    for (int n = w.size() - 1; n > 0; n--)
+        w[n] = w[n - 1];
 
     return y;
 }
+

@@ -9,27 +9,34 @@ extern "C" {
 #define PI 3.14159265358979323846
 #define FS 44100
 
-struct Flanger
+class Flanger
 {
+public:
     double rate;    //rate of flanger
     double phase;   //current phase of flanger (time)
     Delay tap;      //delay line
-    //process one sample
+    float sample(float x); // process one sample
     static float sample(void *state, float x);
 };
 
-float Flanger::sample(void *state, float x)
+float Flanger::sample(float x)
 {
-    Flanger &fl = *(Flanger *)state;
-    const int N = fl.tap.length();
+    const int N = tap.length();
+    double n, y;
 
-    fl.tap[0] = x;
-    const double n = (N - 1) * (0.5 * cos(2 * PI * fl.rate * fl.phase) + 0.5);
-    const double y = 0.5 * fl.tap[N / 2] + 0.5 * fl.tap[n];
-    --fl.tap;
-    fl.phase += 1.0 / FS;
+    tap[0] = x;
+    n = (N - 1) * (0.5 * cos(2 * PI * rate * phase) + 0.5);
+    y = 0.5 * tap[N / 2] + 0.5 * tap[n];
+    phase += 1.0 / FS;
+    --tap;
 
     return y;
+}
+
+float Flanger::sample(void *state, float x)
+{
+    Flanger *f = (Flanger *)state;
+    return f->sample(x);
 }
 
 int main(int argc, char *argv[])

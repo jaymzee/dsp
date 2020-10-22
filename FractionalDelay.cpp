@@ -2,7 +2,7 @@
 
 /*
  * Delay::Delay() - construct a fractional delay line 
- * @length: length of delay line
+ * length: length of delay line
  */
 Delay::Delay(unsigned length) : w(length), offset(0)
 {
@@ -35,7 +35,7 @@ Delay& Delay::operator++()
 
 /*
  * Delay::operator[](double) - interpolate tap[n]
- * @n: index of delay line tap, must be >= 0 but may have a fractional part
+ * n: index of delay line tap, must be >= 0 but may have a fractional part
  *
  * since there is a fractional part to n, linearly interpolate the samples
  *
@@ -55,7 +55,7 @@ double Delay::operator[](double n)
 
 /*
  * Delay::operator[](int) - reference tap[n]
- * @n: index of delay line tap
+ * n: index of delay line tap
  *
  * Return: reference to w[n] (offset within and modulo wrap w)
  */

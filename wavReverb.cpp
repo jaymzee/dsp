@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     f.a[3000] = 0.6;
 
     int rv = wave_filter(infile, outfile,
-                         (filter_func)CircularFilter::sample, &f,
+                         (filter_func)CircularFilter::sample_, &f,
                          WAVE_PCM, 2.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
