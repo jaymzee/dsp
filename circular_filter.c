@@ -38,7 +38,7 @@ cirfltr_create(unsigned N, unsigned Nb, unsigned *b_indx, double *b_val,
 
 /*
  * cirfltr_destroy() - free memory allocated for circular filter
- * @s: pointer to filter state
+ * s: pointer to filter state
  */
 void cirfltr_destroy(struct cirfltr *s)
 {

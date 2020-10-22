@@ -49,9 +49,9 @@ static long read_data(struct wave *fmt, const char *fn, FILE *fp)
 
 /*
  * wave_read_header() - read the wave RIFF header
- * @fmt: pointer to the format header structure to fill
- * @fn:  filename (for better error messages)
- * @fp:  the file to read it from
+ * fmt: pointer to the format header structure to fill
+ * fn:  filename (for better error messages)
+ * fp:  the file to read it from
  *
  * Return: offset of the start of wave data on a successful read of format
  *         0 otherwise
@@ -105,7 +105,7 @@ fail:
 
 /*
  * wave_write_header() - write wave RIFF header to file
- * @fmt: pointer to the format header struct to write
+ * fmt: pointer to the format header struct to write
  *
  * Return: bytes written to file
  */
@@ -116,7 +116,7 @@ long wave_write_header(const struct wave *fmt, FILE *fp)
 
 /*
  * wave_print_header() - print wave RIFF header to stdout
- * @fmt: pointer to the format header structure to dump
+ * fmt: pointer to the format header structure to dump
  *
  * struct wave fmt;
  * FILE fp = fopen("audio.wav", "rb");
@@ -157,7 +157,7 @@ void wave_print_header(const struct wave *fmt)
 
 /*
  * wave_dump() - print wave RIFF header to stdout
- * @filename: file to dump
+ * filename: file to dump
  *
  * convenience procedure for writing a wav file dump utility
  *
