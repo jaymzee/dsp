@@ -3,66 +3,66 @@ CXX = g++
 CFLAGS = -O2 -std=c89 -pedantic -Wall
 CXXFLAGS = -O2 -std=c++11 -pedantic -Wall
 LFLAGS = -s
-OBJSBASIC = wavdump wavwrite
-OBJSFLTRC = wavcanfilt wavreverb wavflanger
+OBJSBASIC = wavdump wav_write
+OBJSFLTRC = wav_can_filt wav_reverb wav_flanger
 OBJSFLTRCPP = wavCanFilt wavReverb wavFlanger
 OBJS = $(OBJSBASIC) $(OBJSFLTRC) $(OBJSFLTRCPP)
 
 all: $(OBJS)
 
-wavCanFilt: wavCanFilt.o wavefmt.o CanonicalFilter.o
+wavCanFilt: wavCanFilt.o wave.o CanonicalFilter.o
 	$(CXX) -o $@ $^ $(LFLAGS)
-wavReverb: wavReverb.o wavefmt.o CircularFilter.o
+wavReverb: wavReverb.o wave.o CircularFilter.o
 	$(CXX) -o $@ $^ $(LFLAGS)
-wavFlanger: wavFlanger.o wavefmt.o Delay.o
+wavFlanger: wavFlanger.o wave.o FractionalDelay.o
 	$(CXX) -o $@ $^ -lm $(LFLAGS)
 
-wavCanFilt.o: wavCanFilt.cpp wavefmt.h CanonicalFilter.h
+wavCanFilt.o: wavCanFilt.cpp wave.h CanonicalFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
-wavReverb.o: wavReverb.cpp wavefmt.h CircularFilter.h
+wavReverb.o: wavReverb.cpp wave.h CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
-wavFlanger.o: wavFlanger.cpp wavefmt.h Delay.h
+wavFlanger.o: wavFlanger.cpp wave.h FractionalDelay.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 CanonicalFilter.o: CanonicalFilter.cpp CanonicalFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 CircularFilter.o: CircularFilter.cpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
-Delay.o: Delay.cpp Delay.h
+FractionalDelay.o: FractionalDelay.cpp FractionalDelay.h
 	$(CXX) $(CXXFLAGS) -c $<
 
-wavflanger: wavflanger.o wavefmt.o fracdelay.o
+wav_flanger: wav_flanger.o wave.o fractional_delay.o
 	$(CC) -o $@ $^ -lm $(LFLAGS)
-wavcanfilt: wavcanfilt.o wavefmt.o canfilt.o
+wav_can_filt: wav_can_filt.o wave.o canonical_filter.o
 	$(CC) -o $@ $^ $(LFLAGS)
-wavreverb: wavreverb.o wavefmt.o circfilt.o
+wav_reverb: wav_reverb.o wave.o circular_filter.o
 	$(CC) -o $@ $^ $(LFLAGS)
 
-wavflanger.o: wavflanger.c wavefmt.h fracdelay.h
+wav_flanger.o: wav_flanger.c wave.h fractional_delay.h
 	$(CC) $(CFLAGS) -c $<
-wavcanfilt.o: wavcanfilt.c wavefmt.h canfilt.h
+wav_can_filt.o: wav_can_filt.c wave.h canonical_filter.h
 	$(CC) $(CFLAGS) -c $<
-wavreverb.o: wavreverb.c wavefmt.h circfilt.h
-	$(CC) $(CFLAGS) -c $<
-
-fracdelay.o: fracdelay.c fracdelay.h
-	$(CC) $(CFLAGS) -c $<
-canfilt.o: canfilt.c canfilt.h
-	$(CC) $(CFLAGS) -c $<
-circfilt.o: circfilt.c circfilt.h
+wav_reverb.o: wav_reverb.c wave.h circular_filter.h
 	$(CC) $(CFLAGS) -c $<
 
-wavwrite: wavwrite.o wavefmt.o
+fractional_delay.o: fractional_delay.c fractional_delay.h
+	$(CC) $(CFLAGS) -c $<
+canonical_filter.o: canonical_filter.c canonical_filter.h
+	$(CC) $(CFLAGS) -c $<
+circular_filter.o: circular_filter.c circular_filter.h
+	$(CC) $(CFLAGS) -c $<
+
+wav_write: wav_write.o wave.o
 	$(CC) -o $@ $^ -lm $(LFLAGS)
-wavdump: wavdump.o wavefmt.o
+wavdump: wavdump.o wave.o
 	$(CC) -o $@ $^ $(LFLAGS)
 
-wavwrite.o: wavwrite.c wavefmt.h
+wav_write.o: wav_write.c wave.h
 	$(CC) $(CFLAGS) -c $<
-wavdump.o: wavdump.c wavefmt.h
+wavdump.o: wavdump.c wave.h
 	$(CC) $(CFLAGS) -c $<
 
-wavefmt.o: wavefmt.c wavefmt.h
+wave.o: wave.c wave.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:

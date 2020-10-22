@@ -1,4 +1,4 @@
-#include "circfilt.h"
+#include "circular_filter.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -1,5 +1,5 @@
 extern "C" {
-#include "wavefmt.h"
+#include "wave.h"
 }
 #include "CanonicalFilter.h"
 #include <cstdio>
@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    int rv = wavefmt_filter(argv[1], argv[2], 
-                            CanonicalFilter::procsamp, &fs,
-                            WAVEFMT_PCM, 0.0);
+    int rv = wave_filter(argv[1], argv[2],
+                         CanonicalFilter::procsamp, &fs,
+                         WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

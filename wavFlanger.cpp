@@ -1,7 +1,7 @@
 extern "C" {
-#include "wavefmt.h"
+#include "wave.h"
 }
-#include "Delay.h"
+#include "FractionalDelay.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
     }
 
     Flanger fl = {0.125, 0.0, Delay(200)};
-    int rv = wavefmt_filter(argv[1], argv[2],
-                            Flanger::procsamp, &fl,
-                            WAVEFMT_PCM, 0.0);
+    int rv = wave_filter(argv[1], argv[2],
+                         Flanger::procsamp, &fl,
+                         WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

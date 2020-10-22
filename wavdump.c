@@ -1,4 +1,4 @@
-#include "wavefmt.h"
+#include "wave.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     }
 
     filename = argv[1];
-    rv = wavefmt_dump(filename);
+    rv = wave_dump(filename);
 
     return (rv == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

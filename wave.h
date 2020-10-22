@@ -1,5 +1,5 @@
-#ifndef WAVEFMT_H
-#define WAVEFMT_H
+#ifndef WAVE_H
+#define WAVE_H
 
 /* RIFF WAVE file format */
 
@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-struct wavefmt {
+struct wave {
     char     riff_tag[4];   /* RIFF chunk tag */
     uint32_t riff_size;     /* size of file (minus 8 bytes) */
     char     wave_tag[4];   /* WAVE chunk tag */
@@ -24,24 +24,24 @@ struct wavefmt {
 };
 
 /* read the WAVEfmt RIFF header */
-long wavefmt_read_header(struct wavefmt *fmt, const char *tag, FILE *fp);
+long wave_read_header(struct wave *fmt, const char *tag, FILE *fp);
 
 /* write the WAVEfmt RIFF header */
-long wavefmt_write_header(const struct wavefmt *fmt, FILE *fp);
+long wave_write_header(const struct wave *fmt, FILE *fp);
 
 /* print summary of the WAVEfmt RIFF header to stdout */
-void wavefmt_print_header(const struct wavefmt *fmt);
+void wave_print_header(const struct wave *fmt);
 
 /* dump a summary of the wav file to stdout */
-int wavefmt_dump(const char *filename);
+int wave_dump(const char *filename);
 
 /* sample by sample process wav file */
-int wavefmt_filter(const char *infile, const char *outfile,
+int wave_filter(const char *infile, const char *outfile,
                    filter_func *f, void *state, int format, double t);
 
-#define WAVEFMT_PCM     1
-#define WAVEFMT_FLOAT   3
-#define WAVEFMT_ALAW    6
-#define WAVEFMT_uLAW    7
+#define WAVE_PCM     1
+#define WAVE_FLOAT   3
+#define WAVE_ALAW    6
+#define WAVE_uLAW    7
 
-#endif /* WAVEFMT_H */
+#endif /* WAVE_H */

@@ -1,5 +1,5 @@
 extern "C" {
-#include "wavefmt.h"
+#include "wave.h"
 }
 #include "CircularFilter.h"
 #include <cstdio>
@@ -17,9 +17,9 @@ int main(int argc, char *argv[])
     fs.b[3500] = 0.4;
     fs.a[3000] = 0.6;
 
-    int rv = wavefmt_filter(argv[1], argv[2], 
-                            CircularFilter::procsamp, &fs,
-                            WAVEFMT_PCM, 2.0);
+    int rv = wave_filter(argv[1], argv[2],
+                         CircularFilter::procsamp, &fs,
+                         WAVE_PCM, 2.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

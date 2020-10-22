@@ -1,4 +1,4 @@
-#include "Delay.h"
+#include "FractionalDelay.h"
 
 /*
  * Delay::Delay() - construct a fractional delay line 

@@ -1,10 +1,10 @@
-#include "wavefmt.h"
+#include "wave.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
-/* helper for wavefmt_read_header */
-static long read_fmt(struct wavefmt *fmt, const char *fn, FILE *fp)
+/* helper for wave_read_header */
+static long read_fmt(struct wave *fmt, const char *fn, FILE *fp)
 {
     long bytecount = 0;
 
@@ -33,8 +33,8 @@ static long read_fmt(struct wavefmt *fmt, const char *fn, FILE *fp)
     return bytecount;
 }
 
-/* helper for wavefmt_read_header */
-static long read_data(struct wavefmt *fmt, const char *fn, FILE *fp)
+/* helper for wave_read_header */
+static long read_data(struct wave *fmt, const char *fn, FILE *fp)
 {
     long bytecount = 0;
 
@@ -48,7 +48,7 @@ static long read_data(struct wavefmt *fmt, const char *fn, FILE *fp)
 }
 
 /*
- * wavefmt_read_header() - read the wavefmt RIFF header
+ * wave_read_header() - read the wave RIFF header
  * @fmt: pointer to the format header structure to fill
  * @fn:  filename (for better error messages)
  * @fp:  the file to read it from
@@ -56,7 +56,7 @@ static long read_data(struct wavefmt *fmt, const char *fn, FILE *fp)
  * Return: offset of the start of wave data on a successful read of format
  *         0 otherwise
  */
-long wavefmt_read_header(struct wavefmt *fmt, const char *fn, FILE *fp)
+long wave_read_header(struct wave *fmt, const char *fn, FILE *fp)
 {
     long bytecount = 0;
 
@@ -104,43 +104,43 @@ fail:
 }
 
 /*
- * wavefmt_write_header() - write wavefmt RIFF header to file
+ * wave_write_header() - write wave RIFF header to file
  * @fmt: pointer to the format header struct to write
  *
  * Return: bytes written to file
  */
-long wavefmt_write_header(const struct wavefmt *fmt, FILE *fp)
+long wave_write_header(const struct wave *fmt, FILE *fp)
 {
     return fwrite(fmt, sizeof(*fmt), 1, fp);
 }
 
 /*
- * wavefmt_print_header() - print wavefmt RIFF header to stdout
+ * wave_print_header() - print wave RIFF header to stdout
  * @fmt: pointer to the format header structure to dump
  *
- * struct wavefmt fmt;
+ * struct wave fmt;
  * FILE fp = fopen("audio.wav", "rb");
- * long seek = wavefmt_read_header(&fmt, fp);
- * wavefmt_print_header(&fmt);
+ * long seek = wave_read_header(&fmt, fp);
+ * wave_print_header(&fmt);
  * ...
  * ... process audio
  * ...
  */
-void wavefmt_print_header(const struct wavefmt *fmt)
+void wave_print_header(const struct wave *fmt)
 {
     printf("file length: %u\n", fmt->riff_size + 8);
     printf("format: ");
     switch (fmt->format) {
-    case WAVEFMT_PCM:
+    case WAVE_PCM:
         printf("PCM");
         break;
-    case WAVEFMT_FLOAT:
+    case WAVE_FLOAT:
         printf("IEEE float");
         break;
-    case WAVEFMT_ALAW:
+    case WAVE_ALAW:
         printf("8 bit A-law");
         break;
-    case WAVEFMT_uLAW:
+    case WAVE_uLAW:
         printf("8 bit mu-law");
     default:
         printf("unknown %d", fmt->format);
@@ -156,7 +156,7 @@ void wavefmt_print_header(const struct wavefmt *fmt)
 }
 
 /*
- * wavefmt_dump() - print wavefmt RIFF header to stdout
+ * wave_dump() - print wave RIFF header to stdout
  * @filename: file to dump
  *
  * convenience procedure for writing a wav file dump utility
@@ -165,10 +165,10 @@ void wavefmt_print_header(const struct wavefmt *fmt)
           -2 could not open file
           -3 could not parse file
  */
-int wavefmt_dump(const char *filename)
+int wave_dump(const char *filename)
 {
     FILE *fp;
-    struct wavefmt fmt;
+    struct wave fmt;
     long data_seek_start;
 
     fp = fopen(filename, "rb");
@@ -176,14 +176,14 @@ int wavefmt_dump(const char *filename)
         perror(filename);
         return -2;
     }
-    data_seek_start = wavefmt_read_header(&fmt, filename, fp);
+    data_seek_start = wave_read_header(&fmt, filename, fp);
     if (!data_seek_start) {
-        /* wavefmt_read_header has already displayed a helpful error message */
+        /* wave_read_header has already displayed a helpful error message */
         return -3;
     }
     fclose(fp);
 
-    wavefmt_print_header(&fmt);
+    wave_print_header(&fmt);
     printf("data seek start: 0x%08lx\n", data_seek_start);
 
     return 0;
@@ -285,12 +285,12 @@ static void filter_float2pcm(FILE *fpi, FILE *fpo,
 }
 
 /*
- * wavefmt_filter() - sample by sample filter
+ * wave_filter() - sample by sample filter
  * @infile: filename of input wav file
  * @outfile: filename of output wav file
  * @f: callback function for sample by sample processing
  * @state: state to pass to sample processing function
- * @format: WAVEFMT_FLOAT or WAVEFMT_PCM
+ * @format: WAVE_FLOAT or WAVE_PCM
  * @t: length of time to run filter
  *
  * signal process infile to outfile (float)
@@ -301,11 +301,11 @@ static void filter_float2pcm(FILE *fpi, FILE *fpo,
  *        -3 could not parse file
  *        -4 unsupported file format
  */
-int wavefmt_filter(const char *infile, const char *outfile, 
+int wave_filter(const char *infile, const char *outfile, 
                    filter_func *f, void *state, int format, double t)
 {
     FILE *fpi, *fpo;
-    struct wavefmt fmti, fmto;
+    struct wave fmti, fmto;
     long data_offset;
     unsigned int Nin, Nout;
 
@@ -319,7 +319,7 @@ int wavefmt_filter(const char *infile, const char *outfile,
         perror(outfile);
         return -2;
     }
-    data_offset = wavefmt_read_header(&fmti, infile, fpi);
+    data_offset = wave_read_header(&fmti, infile, fpi);
     if (!data_offset) {
         return -3;
     }
@@ -327,7 +327,7 @@ int wavefmt_filter(const char *infile, const char *outfile,
         fprintf(stderr, "%s: number of channels must be 1\n", infile);
         return -4;
     }
-    if (format != WAVEFMT_PCM && format != WAVEFMT_FLOAT) {
+    if (format != WAVE_PCM && format != WAVE_FLOAT) {
         fprintf(stderr, "unsupported output format %d\n", format);
         return -4;
     }
@@ -337,22 +337,22 @@ int wavefmt_filter(const char *infile, const char *outfile,
     Nout = (t == 0.0) ? Nin : fmto.samplerate * t;
     fmto.format = format;
     fmto.fmt_size = 16;
-    fmto.bitspersample = (format == WAVEFMT_FLOAT) ? 32 : 16;
-    fmto.blockalign = (format == WAVEFMT_FLOAT) ? 4 : 2;
+    fmto.bitspersample = (format == WAVE_FLOAT) ? 32 : 16;
+    fmto.blockalign = (format == WAVE_FLOAT) ? 4 : 2;
     fmto.byterate = fmto.blockalign * fmto.samplerate;
     fmto.data_size = Nout * fmto.blockalign;
     fmto.riff_size = fmto.data_size + 16 + 8 + 8 + 4;
-    wavefmt_write_header(&fmto, fpo);
-  
-    if (fmti.format == WAVEFMT_PCM && fmti.bitspersample == 16) {
-        if (format == WAVEFMT_FLOAT) 
+    wave_write_header(&fmto, fpo);
+
+    if (fmti.format == WAVE_PCM && fmti.bitspersample == 16) {
+        if (format == WAVE_FLOAT)
             filter_pcm2float(fpi, fpo, f, state, Nin, Nout);
-        else if (format == WAVEFMT_PCM)
+        else if (format == WAVE_PCM)
             filter_pcm2pcm(fpi, fpo, f, state, Nin, Nout);
-    } else if (fmti.format == WAVEFMT_FLOAT && fmti.bitspersample == 32) {
-        if (format == WAVEFMT_FLOAT) 
+    } else if (fmti.format == WAVE_FLOAT && fmti.bitspersample == 32) {
+        if (format == WAVE_FLOAT)
             filter_float2float(fpi, fpo, f, state, Nin, Nout);
-        else if (format == WAVEFMT_PCM)
+        else if (format == WAVE_PCM)
             filter_float2pcm(fpi, fpo, f, state, Nin, Nout);
     } else {
         fprintf(stderr, "%s: unsupported format\n", infile);
