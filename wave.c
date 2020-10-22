@@ -286,81 +286,88 @@ static void filter_float2pcm(FILE *fpi, FILE *fpo,
 
 /*
  * wave_filter() - sample by sample filter
- * @infile: filename of input wav file
- * @outfile: filename of output wav file
- * @f: callback function for sample by sample processing
- * @state: state to pass to sample processing function
- * @format: WAVE_FLOAT or WAVE_PCM
- * @t: length of time to run filter
+ * infile: filename of input wav file
+ * outfile: filename of output wav file
+ * f: callback function for sample by sample processing
+ * state: state to pass to sample processing function
+ * format: WAVE_FLOAT or WAVE_PCM
+ * t: length of time to run filter
  *
  * signal process infile to outfile (float)
  * t = 0.0 will make the output the same length as the input
  *
  * Return: 0 on success
- *        -2 could not open file
- *        -3 could not parse file
- *        -4 unsupported file format
+ *         1 could not open file
+ *         2 could not parse file
+ *         4 unsupported file format
  */
 int wave_filter(const char *infile, const char *outfile,
                 filter_func f, void *state, int format, double t)
 {
     FILE *fpi, *fpo;
-    struct wave fmti, fmto;
+    struct wave in, out;
     long data_offset;
     unsigned int Nin, Nout;
 
     fpi = fopen(infile, "rb");
     if (!fpi) {
         perror(infile);
-        return -2;
+        return 1;
     }
     fpo = fopen(outfile, "wb");
     if (!fpo) {
         perror(outfile);
-        return -2;
+        return 1;
     }
-    data_offset = wave_read_header(&fmti, infile, fpi);
+    data_offset = wave_read_header(&in, infile, fpi);
     if (!data_offset) {
-        return -3;
+        return 2;
     }
-    if (fmti.channels != 1) {
+    if (in.channels != 1) {
         fprintf(stderr, "%s: number of channels must be 1\n", infile);
-        return -4;
+        return 4;
     }
     if (format != WAVE_PCM && format != WAVE_FLOAT) {
         fprintf(stderr, "unsupported output format %d\n", format);
-        return -4;
+        return 4;
     }
 
-    fmto = fmti;
-    Nin = fmti.data_size / fmti.blockalign;
-    Nout = (t == 0.0) ? Nin : fmto.samplerate * t;
-    fmto.format = format;
-    fmto.fmt_size = 16;
-    fmto.bitspersample = (format == WAVE_FLOAT) ? 32 : 16;
-    fmto.blockalign = (format == WAVE_FLOAT) ? 4 : 2;
-    fmto.byterate = fmto.blockalign * fmto.samplerate;
-    fmto.data_size = Nout * fmto.blockalign;
-    fmto.riff_size = fmto.data_size + 16 + 8 + 8 + 4;
-    wave_write_header(&fmto, fpo);
+    out = in;
+    Nin = in.data_size / in.blockalign;
+    Nout = (t == 0.0) ? Nin : out.samplerate * t;
+    out.format = format;
+    out.fmt_size = 16;
+    out.bitspersample = (format == WAVE_FLOAT) ? 32 : 16;
+    out.blockalign = (format == WAVE_FLOAT) ? 4 : 2;
+    out.byterate = out.blockalign * out.samplerate;
+    out.data_size = Nout * out.blockalign;
+    out.riff_size = out.data_size + 16 + 8 + 8 + 4;
+    wave_write_header(&out, fpo);
 
-    if (fmti.format == WAVE_PCM && fmti.bitspersample == 16) {
-        if (format == WAVE_FLOAT)
+    if (in.format == WAVE_PCM && in.bitspersample == 16) {
+        if (out.format == WAVE_FLOAT)
             filter_pcm2float(fpi, fpo, f, state, Nin, Nout);
-        else if (format == WAVE_PCM)
+        else if (out.format == WAVE_PCM)
             filter_pcm2pcm(fpi, fpo, f, state, Nin, Nout);
-    } else if (fmti.format == WAVE_FLOAT && fmti.bitspersample == 32) {
-        if (format == WAVE_FLOAT)
+        else
+            goto fail;
+    } else if (in.format == WAVE_FLOAT && in.bitspersample == 32) {
+        if (out.format == WAVE_FLOAT)
             filter_float2float(fpi, fpo, f, state, Nin, Nout);
-        else if (format == WAVE_PCM)
+        else if (out.format == WAVE_PCM)
             filter_float2pcm(fpi, fpo, f, state, Nin, Nout);
+        else
+            goto fail;
     } else {
-        fprintf(stderr, "%s: unsupported format\n", infile);
-        return -4;
+        goto fail;
     }
 
     fclose(fpi);
     fclose(fpo);
-
     return 0;
+
+fail:
+    fprintf(stderr, "%s: filter from %d to %d unsupported\n",
+            infile, in.format, out.format);
+    return 4;
 }

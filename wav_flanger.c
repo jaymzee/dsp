@@ -10,43 +10,46 @@ struct flanger
 {
     double rate;
     double phase;
-    struct delay_state *delay;
+    struct delay *delay;
 };
 
-float flanger_procsamp(float x, void *state)
+float flanger_sample(struct flanger *f, float x)
 {
-    struct flanger *fl = state;
-    struct delay_state *delay = fl->delay;
+    struct delay *delay = f->delay;
     const int N = delay->N;
     double y;
     double n;
 
-    n = (N-1) * (0.5 * cos(2 * PI * fl->rate * fl->phase) + 0.5);
+    n = (N-1) * (0.5 * cos(2 * PI * f->rate * f->phase) + 0.5);
 
     *delay_w0(delay) = x;
 
     y = 0.5 * delay_w(delay, N / 2) + 0.5 * delay_w(delay, n);
 
     delay_dec(delay);
-    fl->phase += 1.0 / 44100.0;
+    f->phase += 1.0 / 44100.0;
 
     return y;
 }
 
 int main(int argc, char *argv[])
 {
-    struct flanger fl;
+    const char *infile, *outfile;
+    struct flanger f;
     int rv;
 
     if (argc != 3) {
         fprintf(stderr, "Usage: wavflanger infile outfile\n");
         return EXIT_FAILURE;
     }
+    infile = argv[1];
+    outfile = argv[2];
 
-    fl.rate = 0.125;
-    fl.phase = 0.0;
-    fl.delay = delay_create(200);
-    rv = wave_filter(argv[1], argv[2], (filter_func)flanger_procsamp, &fl, WAVE_PCM, 0.0);
+    f.rate = 0.125;
+    f.phase = 0.0;
+    f.delay = delay_create(200);
+    rv = wave_filter(infile, outfile,
+                     (filter_func)flanger_sample, &f, WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

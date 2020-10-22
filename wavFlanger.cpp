@@ -12,11 +12,15 @@ extern "C" {
 class Flanger
 {
 public:
-    double rate;    //rate of flanger
-    double phase;   //current phase of flanger (time)
-    Delay tap;      //delay line
-    float sample(float x); // process one sample
-    static float sample(void *state, float x);
+    double rate;            // rate of flanger
+    double phase;           // current phase of flanger (time)
+    Delay tap;              // delay line
+    float sample(float x);  // process one sample
+
+    // filter_func callback function for wave_filter()
+    inline static float sample_(Flanger *f, float x) {
+        return f->sample(x);
+    }
 };
 
 float Flanger::sample(float x)
@@ -33,12 +37,6 @@ float Flanger::sample(float x)
     return y;
 }
 
-float Flanger::sample(void *state, float x)
-{
-    Flanger *f = (Flanger *)state;
-    return f->sample(x);
-}
-
 int main(int argc, char *argv[])
 {
     const char *infile, *outfile;
@@ -51,7 +49,8 @@ int main(int argc, char *argv[])
     outfile = argv[2];
 
     Flanger f = {0.125, 0.0, Delay(200)};
-    int rv = wave_filter(infile, outfile, (filter_func)Flanger::sample, &f,
+    int rv = wave_filter(infile, outfile,
+                         (filter_func)Flanger::sample_, &f,
                          WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
