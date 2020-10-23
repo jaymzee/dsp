@@ -7,13 +7,13 @@
  * circular buffer implementation of a fractional delay line (CPP)
  */
 
-class Delay {
+class FractionalDelay {
     std::vector<double> w;       /* delay line */
     unsigned offset;             /* current start of buffer within w */
 public:
-    Delay(unsigned length);
-    Delay& operator--();         /* (advance delay line by one sample) */
-    Delay& operator++();         /* (retreat delay line by one sample) */
+    FractionalDelay(unsigned length);
+    FractionalDelay& operator--();    /* (advance delay line by one sample) */
+    FractionalDelay& operator++();    /* (retreat delay line by one sample) */
     double operator[](double n); /* interpolate w[n] */
     double& operator[](int n);   /* reference to w[n] */
     unsigned Length();           /* length of delay line */

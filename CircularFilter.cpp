@@ -81,7 +81,7 @@ unsigned CircularFilter::Length()
  *
  * Return: output sample
  */
-float CircularFilter::Sample(float x)
+float CircularFilter::ProcessSample(float x)
 {
     double y, w0;
 

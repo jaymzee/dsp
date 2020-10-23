@@ -17,11 +17,11 @@ wavReverb: wavReverb.o wave.o CircularFilter.o
 wavFlanger: wavFlanger.o wave.o FractionalDelay.o
 	$(CXX) -o $@ $^ -lm $(LFLAGS)
 
-wavCanFilt.o: wavCanFilt.cpp wave.h CanonicalFilter.h
+wavCanFilt.o: wavCanFilt.cpp Wave.hpp CanonicalFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
-wavReverb.o: wavReverb.cpp wave.h CircularFilter.h
+wavReverb.o: wavReverb.cpp Wave.hpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
-wavFlanger.o: wavFlanger.cpp wave.h FractionalDelay.h
+wavFlanger.o: wavFlanger.cpp Wave.hpp FractionalDelay.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 CanonicalFilter.o: CanonicalFilter.cpp CanonicalFilter.h

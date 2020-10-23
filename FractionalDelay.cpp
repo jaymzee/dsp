@@ -1,19 +1,19 @@
 #include "FractionalDelay.h"
 
 /*
- * Delay::Delay() - construct a fractional delay line 
+ * FractionalDelay::FractionalDelay() - construct a fractional delay line 
  * length: length of delay line
  */
-Delay::Delay(unsigned length) : w(length), offset(0)
+FractionalDelay::FractionalDelay(unsigned length) : w(length), offset(0)
 {
 }
 
 /*
- * Delay::operator--() - advance delay line by one sample
+ * FractionalDelay::operator--() - advance delay line by one sample
  *
  * Return: reference to *this
  */
-Delay& Delay::operator--()
+FractionalDelay& FractionalDelay::operator--()
 {
     if (--offset < 0)
         offset += w.size();
@@ -21,11 +21,11 @@ Delay& Delay::operator--()
 }
 
 /*
- * Delay::operator--() - retreat delay line by one sample
+ * FractionalDelay::operator--() - retreat delay line by one sample
  *
  * Return: reference to *this
  */
-Delay& Delay::operator++()
+FractionalDelay& FractionalDelay::operator++()
 {
     unsigned N = w.size();
     if (++offset > N)
@@ -34,14 +34,13 @@ Delay& Delay::operator++()
 }
 
 /*
- * Delay::operator[](double) - interpolate tap[n]
+ * FractionalDelay::operator[](double) - interpolate tap[n]
  * n: index of delay line tap, must be >= 0 but may have a fractional part
- *
- * since there is a fractional part to n, linearly interpolate the samples
+ *    since there is a fractional part to n, linearly interpolate the samples
  *
  * Return: tap[n] (offset within and modulo wrap w)
  */
-double Delay::operator[](double n)
+double FractionalDelay::operator[](double n)
 {
     double w1, w2, f;
     unsigned N = w.size();
@@ -54,20 +53,20 @@ double Delay::operator[](double n)
 }
 
 /*
- * Delay::operator[](int) - reference tap[n]
+ * FractionalDelay::operator[](int) - reference tap[n]
  * n: index of delay line tap
  *
  * Return: reference to w[n] (offset within and modulo wrap w)
  */
-double& Delay::operator[](int n)
+double& FractionalDelay::operator[](int n)
 {
     return w[(offset + n) % w.size()];
 }
 
 /*
- * Delay::length() - length of delay line
+ * FractionalDelay::length() - length of delay line
  */
-unsigned Delay::Length()
+unsigned FractionalDelay::Length()
 {
     return w.size();
 }

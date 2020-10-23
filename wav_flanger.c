@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
 {
     const char *infile, *outfile;
     struct flanger f;
-    int rv;
 
     if (argc != 3) {
         fprintf(stderr, "Usage: wavflanger infile outfile\n");
@@ -48,8 +47,7 @@ int main(int argc, char *argv[])
     f.rate = 0.125;
     f.phase = 0.0;
     f.delay = fracdelay_create(200);
-    rv = wave_filter(infile, outfile,
-                     (filter_func)flanger_sample, &f, WAVE_PCM, 0.0);
 
-    return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    return wave_filter(infile, outfile,
+                       (filter_func)flanger_sample, &f, WAVE_PCM, 0.0);
 }

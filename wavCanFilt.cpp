@@ -1,15 +1,9 @@
-extern "C" {
-#include "wave.h"
-}
+#include "Wave.hpp"
 #include "CanonicalFilter.h"
 #include <cstdio>
 #include <cstdlib>
 
-CanonicalFilter f = {
-    {0.0, 0.0, 0.0},    //w
-    {0.2, 0.2, 0.2},    //b
-    {1.0, 0.3, 0.3}     //a
-};
+CanonicalFilter f(3, {0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
 
 int main(int argc, char *argv[])
 {
@@ -22,9 +16,5 @@ int main(int argc, char *argv[])
     infile = argv[1];
     outfile = argv[2];
 
-    int rv = wave_filter(infile, outfile,
-                         (filter_func)CanonicalFilter::sample, &f,
-                         WAVE_PCM, 0.0);
-
-    return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    return WaveFilter(infile, outfile, &f, WAVE_PCM, 0.0);
 }

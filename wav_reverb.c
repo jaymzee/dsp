@@ -10,10 +10,8 @@ double   a_val[1]  = {0.6};
 
 int main(int argc, char *argv[])
 {
-    const char *infile;
-    const char *outfile;
+    const char *infile, *outfile;
     struct cirfltr *fs;
-    int rv;
 
     if (argc != 3) {
         fprintf(stderr, "Usage: wavreverb infile outfile\n");
@@ -24,8 +22,6 @@ int main(int argc, char *argv[])
     outfile = argv[2];
 
     fs = cirfltr_create(5000, 2, b_indx, b_val, 2, a_indx, a_val);
-    rv = wave_filter(infile, outfile, (filter_func)cirfltr_sample, fs,
-                     WAVE_PCM, 2.0);
-
-    return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    return wave_filter(infile, outfile, (filter_func)cirfltr_sample, fs,
+                       WAVE_PCM, 2.0);
 }

@@ -1,22 +1,21 @@
 #ifndef DSP_CANONICALFILTER_H_INCLUDED
 #define DSP_CANONICALFILTER_H_INCLUDED
 
-/* canonical filter for signal processing */
-
-#include "filter.h"
+#include "IFilter.h"
 #include <vector>
 
-class CanonicalFilter {
+/* canonical filter for signal processing */
+class CanonicalFilter: public IFilter {
 public:
+    CanonicalFilter(unsigned len,
+                    std::vector<double> b,
+                    std::vector<double> a) : w(len), b(b), a(a) {}
     std::vector<double> w;  /* delay line */
     std::vector<double> b;  /* b coefficients - feed forward */
     std::vector<double> a;  /* a coefficients - feedback */
-    float Sample(float x);  /* process one sample through filter */
 
-    // filter function callback for wave_filter()
-    inline static float sample(CanonicalFilter *cf, float x) {
-        return cf->Sample(x);
-    }
+    /* process one sample through filter */
+    float ProcessSample(float x);
 };
 
-#endif /* CANONICALFILTER_H */
+#endif

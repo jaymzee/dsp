@@ -1,7 +1,6 @@
-extern "C" {
-#include "wave.h"
-}
+#include "IFilter.h"
 #include "FractionalDelay.h"
+#include "Wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -9,33 +8,28 @@ extern "C" {
 #define PI 3.14159265358979323846
 #define FS 44100
 
-class Flanger
-{
+class Flanger: public IFilter {
 public:
-    double rate;            // rate of flanger
-    double phase;           // current phase of flanger (time)
-    Delay tap;              // delay line
-    float Sample(float x);  // process one sample
+    FractionalDelay w;  // delay line
+    double rate;        // rate of flanger
+    double phase;       // current phase of flanger (time)
 
-    // filter_func callback function for wave_filter()
-    inline static float sample(Flanger *f, float x) {
-        return f->Sample(x);
+    Flanger(unsigned len, double rate) : w(len), rate(rate), phase(0.0) {}
+
+    // process one sample
+    float ProcessSample(float x) {
+        const int N = w.Length();
+        double n, y;
+
+        w[0] = x;
+        n = (N - 1) * (0.5 * cos(2 * PI * rate * phase) + 0.5);
+        y = 0.5 * w[N / 2] + 0.5 * w[n];
+        phase += 1.0 / FS;
+        --w;
+
+        return y;
     }
 };
-
-float Flanger::Sample(float x)
-{
-    const int N = tap.Length();
-    double n, y;
-
-    tap[0] = x;
-    n = (N - 1) * (0.5 * cos(2 * PI * rate * phase) + 0.5);
-    y = 0.5 * tap[N / 2] + 0.5 * tap[n];
-    phase += 1.0 / FS;
-    --tap;
-
-    return y;
-}
 
 int main(int argc, char *argv[])
 {
@@ -45,8 +39,7 @@ int main(int argc, char *argv[])
     }
     const char *infile = argv[1];
     const char *outfile = argv[2];
-    Flanger f = {0.125, 0.0, Delay(200)};
+    Flanger f(200, 0.125);
 
-    return wave_filter(infile, outfile, (filter_func)Flanger::sample, &f,
-                       WAVE_PCM, 0.0);
+    return WaveFilter(infile, outfile, &f, WAVE_PCM, 0.0);
 }

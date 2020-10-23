@@ -6,7 +6,7 @@
  *
  * Return: output sample
  */
-float CanonicalFilter::Sample(float x)
+float CanonicalFilter::ProcessSample(float x)
 {
     double y, w0;
 
