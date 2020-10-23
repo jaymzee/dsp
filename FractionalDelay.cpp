@@ -67,7 +67,7 @@ double& Delay::operator[](int n)
 /*
  * Delay::length() - length of delay line
  */
-unsigned Delay::length()
+unsigned Delay::Length()
 {
     return w.size();
 }

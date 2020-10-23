@@ -3,56 +3,89 @@
  * CircularFilter::CircularFilter() - construct a CircularFilter
  * length: length of delay line
  */
-CircularFilter::CircularFilter(unsigned length) : w(length), offset(0)
+CircularFilter::CircularFilter(unsigned length) : w_(length), offset_(0)
 {
 }
 
 /*
- * CircularFilter::decrement() - advance delay line by one sample
+ * CircularFilter::operator-- advance delay line by one sample
  *
  */
-void CircularFilter::decrement()
+CircularFilter& CircularFilter::operator--()
 {
-    if (--offset < 0)
-        offset += w.size();
+    if (--offset_ < 0)
+        offset_ += w_.size();
+    return *this;
 }
 
 /*
- * CircularFilter::increment() - retreat delay line by one sample
+ * CircularFilter::Shift() advance delay line by one sample
  *
  */
-void CircularFilter::increment()
+void CircularFilter::Shift()
 {
-    unsigned N = w.size();
-    if (++offset > N)
-        offset -= N;
+    if (--offset_ < 0)
+        offset_ += w_.size();
 }
 
 /*
- * CircularFilter::tap() - reference tap[n]
+ * CircularFilter::operator++ retreat delay line by one sample
+ *
+ */
+CircularFilter& CircularFilter::operator++()
+{
+    unsigned N = w_.size();
+    if (++offset_ > N)
+        offset_ -= N;
+    return *this;
+}
+
+/*
+ * CircularFilter::Unshift() retreat delay line by one sample
+ *
+ */
+void CircularFilter::Unshift()
+{
+    unsigned N = w_.size();
+    if (++offset_ > N)
+        offset_ -= N;
+}
+
+/*
+ * CircularFilter::operator[] return reference to tap[n]
  *
  * Return: reference to tap[n] (offset and modulo wrap of w)
  */
-double& CircularFilter::tap(unsigned n)
+double& CircularFilter::operator[](unsigned n)
 {
-    return w[(offset + n) % w.size()];
+    return w_[(offset_ + n) % w_.size()];
 }
 
 /*
- * CircularFilter::length() - length of delay line
+ * CircularFilter::Tap() return reference to tap[n]
+ *
+ * Return: reference to tap[n] (offset and modulo wrap of w)
  */
-unsigned CircularFilter::length()
+double& CircularFilter::w(unsigned n)
 {
-    return w.size();
+    return w_[(offset_ + n) % w_.size()];
 }
 
 /*
- * CircularFilter::procsamp() - process one sample
+ * CircularFilter::Length() return length of delay line
+ */
+unsigned CircularFilter::Length()
+{
+    return w_.size();
+}
+
+/*
+ * CircularFilter::Sample() process one sample
  * x: input sample
  *
  * Return: output sample
  */
-float CircularFilter::sample(float x)
+float CircularFilter::Sample(float x)
 {
     double y, w0;
 
@@ -60,15 +93,17 @@ float CircularFilter::sample(float x)
     //  .first is the coefficient index
     //  .second is the actual coefficient
 
+    // feedback terms
     w0 = x;
     for (auto c : a)
-        w0 -= c.second * tap(c.first);
-    tap(0) = w0;
+        w0 -= c.second * w(c.first);
+    w(0) = w0;
 
+    // feed forward terms
     y = 0.0;
     for (auto c : b)
-        y += c.second * tap(c.first);
+        y += c.second * w(c.first);
 
-    decrement();
+    Shift();
     return y;
 }

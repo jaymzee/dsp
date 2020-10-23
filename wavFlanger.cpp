@@ -15,17 +15,17 @@ public:
     double rate;            // rate of flanger
     double phase;           // current phase of flanger (time)
     Delay tap;              // delay line
-    float sample(float x);  // process one sample
+    float Sample(float x);  // process one sample
 
     // filter_func callback function for wave_filter()
-    inline static float sample_(Flanger *f, float x) {
-        return f->sample(x);
+    inline static float sample(Flanger *f, float x) {
+        return f->Sample(x);
     }
 };
 
-float Flanger::sample(float x)
+float Flanger::Sample(float x)
 {
-    const int N = tap.length();
+    const int N = tap.Length();
     double n, y;
 
     tap[0] = x;
@@ -39,19 +39,14 @@ float Flanger::sample(float x)
 
 int main(int argc, char *argv[])
 {
-    const char *infile, *outfile;
-
     if (argc != 3) {
         fprintf(stderr, "Usage: wavFlanger infile outfile\n");
         return EXIT_FAILURE;
     }
-    infile = argv[1];
-    outfile = argv[2];
-
+    const char *infile = argv[1];
+    const char *outfile = argv[2];
     Flanger f = {0.125, 0.0, Delay(200)};
-    int rv = wave_filter(infile, outfile,
-                         (filter_func)Flanger::sample_, &f,
-                         WAVE_PCM, 0.0);
 
-    return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    return wave_filter(infile, outfile, (filter_func)Flanger::sample, &f,
+                       WAVE_PCM, 0.0);
 }

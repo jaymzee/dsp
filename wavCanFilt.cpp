@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     outfile = argv[2];
 
     int rv = wave_filter(infile, outfile,
-                         (filter_func)CanonicalFilter::sample_, &f,
+                         (filter_func)CanonicalFilter::sample, &f,
                          WAVE_PCM, 0.0);
 
     return rv == 0 ? EXIT_SUCCESS : EXIT_FAILURE;

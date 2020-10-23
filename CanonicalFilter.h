@@ -11,11 +11,11 @@ public:
     std::vector<double> w;  /* delay line */
     std::vector<double> b;  /* b coefficients - feed forward */
     std::vector<double> a;  /* a coefficients - feedback */
-    float sample(float x);  /* process one sample through filter */
+    float Sample(float x);  /* process one sample through filter */
 
     // filter function callback for wave_filter()
-    inline static float sample_(CanonicalFilter *cf, float x) {
-        return cf->sample(x);
+    inline static float sample(CanonicalFilter *cf, float x) {
+        return cf->Sample(x);
     }
 };
 

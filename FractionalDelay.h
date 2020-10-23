@@ -16,7 +16,7 @@ public:
     Delay& operator++();         /* (retreat delay line by one sample) */
     double operator[](double n); /* interpolate tap[n] */
     double& operator[](int n);   /* reference to tap[n] */
-    unsigned length();           /* length of delay line */
+    unsigned Length();           /* length of delay line */
 };
 
 #endif

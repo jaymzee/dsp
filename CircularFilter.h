@@ -13,21 +13,24 @@
 #include <map>
 
 class CircularFilter {
-    std::vector<double> w;          /* delay line buffer */
-    unsigned offset;                /* current start of buffer within w */
+    std::vector<double> w_;         /* delay line buffer */
+    unsigned offset_;               /* current start of buffer within w */
 public:
     std::map<unsigned, double> b;   /* feedforward coefficients */
     std::map<unsigned, double> a;   /* feedback coefficients */
     CircularFilter(unsigned length);
-    void decrement();               /* advance delay line by one sample */
-    void increment();               /* retreat delay line by one sample */
-    double& tap(unsigned n);        /* reference to tap[n] */
-    unsigned length();              /* length of delay line */
-    float sample(float x);          /* process one sample through filter */
+    CircularFilter& operator--();   /* advance delay line by one sample */
+    void Shift();                   /* advance delay line by one sample */
+    CircularFilter& operator++();   /* retreat delay line by one sample */
+    void Unshift();                 /* retreat delay line by one sample */
+    double& operator[](unsigned n); /* reference to w[n modulo] */
+    double& w(unsigned n);          /* reference to w[n modulo] */
+    unsigned Length();              /* length of delay line */
+    float Sample(float x);          /* process one sample through filter */
 
     /* filter_func callback for wave_filter() */
-    inline static float sample_(CircularFilter *cf, float x) {
-        return cf->sample(x);
+    inline static float sample(CircularFilter *cf, float x) {
+        return cf->Sample(x);
     }
 };
 
