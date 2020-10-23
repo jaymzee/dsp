@@ -3,15 +3,15 @@
 #include <string.h>
 
 /*
- * delay_create() - allocate and initialize a fractional delay
+ * fracdelay_create() - allocate and initialize a fractional delay
  * N:      length of w
  *
  * Return: the initialized state structure for the filter
  */
-struct delay *
-delay_create(unsigned N)
+struct fracdelay *
+fracdelay_create(unsigned N)
 {
-    struct delay *s;
+    struct fracdelay *s;
     s = malloc(sizeof(*s));
     s->N = N;
     s->w = calloc(N, sizeof(double));
@@ -20,23 +20,23 @@ delay_create(unsigned N)
 }
 
 /*
- * delay_destroy() - free memory allocated for circular filter
+ * fracdelay_destroy() - free memory allocated for circular filter
  * s: pointer to filter state
  */
-void delay_destroy(struct delay *s)
+void fracdelay_destroy(struct fracdelay *s)
 {
     free(s->w);
     free(s);
 }
 
 /*
- * delay_dec() - decrement offset of w buffer 
+ * fracdelay_dec() - decrement offset of w buffer 
  *                   (advance delay line by one sample)
  * s: pointer to filter state
  *
  * properly wrap offset so that it doesn't fall off the edge of buffer
  */
-void delay_dec(struct delay *s)
+void fracdelay_dec(struct fracdelay *s)
 {
     if (s->offset == 0)
         s->offset = s->N;
@@ -44,12 +44,12 @@ void delay_dec(struct delay *s)
 }
 
 /*
- * delay_inc() - increment offset of w buffer
+ * fracdelay_inc() - increment offset of w buffer
  * s: pointer to filter state
  *
  * properly wrap offset so that it doesn't fall off the edge of buffer
  */
-void delay_inc(struct delay *s)
+void fracdelay_inc(struct fracdelay *s)
 {
     s->offset++;
     if (s->offset > s->N)
@@ -57,7 +57,7 @@ void delay_inc(struct delay *s)
 }
 
 /*
- * delay_w() - return pointer to w[n] while handling wrapping
+ * fracdelay_w() - return pointer to w[n] while handling wrapping
  * s: pointer to filter state
  * n: index into w (must be positive or zero but can have a fractional part)
  *
@@ -65,7 +65,7 @@ void delay_inc(struct delay *s)
  *
  * Return: w[n]
  */
-double delay_w(struct delay *s, double n)
+double fracdelay_w(struct fracdelay *s, double n)
 {
     double wa, wb, f;
     wa = s->w[(s->offset + (int)n) % s->N];
@@ -75,12 +75,12 @@ double delay_w(struct delay *s, double n)
 }
 
 /*
- * delay_w0() - return pointer to w[0]
+ * fracdelay_w0() - return pointer to w[0]
  * s: pointer to filter state
  *
  * Return: pointer to w[n]
  */
-double *delay_w0(struct delay *s)
+double *fracdelay_w0(struct fracdelay *s)
 {
     return s->w + s->offset;
 }

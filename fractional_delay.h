@@ -5,28 +5,28 @@
  * circular buffer implementation of a fractional delay line 
  */
 
-struct delay {
+struct fracdelay {
     double *w;       /* delay line */
     unsigned N;      /* length of w */
     unsigned offset; /* current start of buffer within w */
 };
 
 /* allocate and initialize */
-struct delay *delay_create(unsigned N);
+struct fracdelay *fracdelay_create(unsigned N);
 
 /* free state object */
-void delay_destroy(struct delay *s);
+void fracdelay_destroy(struct fracdelay *s);
 
 /* decrement offset within w buffer (advance delay line by one sample) */
-void delay_dec(struct delay *s);
+void fracdelay_dec(struct fracdelay *s);
 
 /* increment offset within w buffer */
-void delay_inc(struct delay *s);
+void fracdelay_inc(struct fracdelay *s);
 
 /* return w[n] while handling wrapping */
-double delay_w(struct delay *s, double n);
+double fracdelay_w(struct fracdelay *s, double n);
 
 /* return pointer to w[0] */
-double *delay_w0(struct delay *s);
+double *fracdelay_w0(struct fracdelay *s);
 
 #endif /* FRACTIONAL_DELAY_H */

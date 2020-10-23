@@ -52,9 +52,7 @@ void CircularFilter::Unshift()
 }
 
 /*
- * CircularFilter::operator[] return reference to tap[n]
- *
- * Return: reference to tap[n] (offset and modulo wrap of w)
+ * CircularFilter::operator[] return ref to w[n] (offset and modulo wrap w[n])
  */
 double& CircularFilter::operator[](unsigned n)
 {
@@ -62,9 +60,7 @@ double& CircularFilter::operator[](unsigned n)
 }
 
 /*
- * CircularFilter::Tap() return reference to tap[n]
- *
- * Return: reference to tap[n] (offset and modulo wrap of w)
+ * CircularFilter::w() return reference to w[n] (offset and modulo wrap w[n])
  */
 double& CircularFilter::w(unsigned n)
 {
