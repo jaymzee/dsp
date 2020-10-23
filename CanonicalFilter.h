@@ -1,5 +1,5 @@
-#ifndef CANONICALFILTER_H
-#define CANONICALFILTER_H
+#ifndef DSP_CANONICALFILTER_H_INCLUDED
+#define DSP_CANONICALFILTER_H_INCLUDED
 
 /* canonical filter for signal processing */
 

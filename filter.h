@@ -1,5 +1,5 @@
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef DSP_FILTER_H_INCLUDED
+#define DSP_FILTER_H_INCLUDED
 
 /* 
  * function pointer for all sample by sample processing algorithms

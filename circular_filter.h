@@ -1,5 +1,5 @@
-#ifndef CIRCULAR_FILTER_H
-#define CIRCULAR_FILTER_H
+#ifndef DSP_CIRCULAR_FILTER_H_INCLUDED
+#define DSP_CIRCULAR_FILTER_H_INCLUDED
 
 /*
  * circular buffer implementation of a canonical filter 

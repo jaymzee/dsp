@@ -1,5 +1,5 @@
-#ifndef FRACTIONAL_DELAY_H
-#define FRACTIONAL_DELAY_H
+#ifndef DSP_FRACTIONAL_DELAY_H_INCLUDED
+#define DSP_FRACTIONAL_DELAY_H_INCLUDED
 
 /*
  * circular buffer implementation of a fractional delay line 

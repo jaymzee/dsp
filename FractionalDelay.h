@@ -1,5 +1,5 @@
-#ifndef FRACTIONALDELAY_H
-#define FRACTIONALDELAY_H
+#ifndef DSP_FRACTIONALDELAY_H_INCLUDED
+#define DSP_FRACTIONALDELAY_H_INCLUDED
 
 #include <vector>
 
@@ -19,4 +19,4 @@ public:
     unsigned length();           /* length of delay line */
 };
 
-#endif /* FRACTIONALDELAY_H */
+#endif

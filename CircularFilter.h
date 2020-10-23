@@ -1,5 +1,5 @@
-#ifndef CIRCULARFILTER_H
-#define CIRCULARFILTER_H
+#ifndef DSP_CIRCULARFILTER_H_INCLUDED
+#define DSP_CIRCULARFILTER_H_INCLUDED
 
 /* 
  * circular buffer implementation of a canonical filter (CPP)

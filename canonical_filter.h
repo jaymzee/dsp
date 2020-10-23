@@ -1,5 +1,5 @@
-#ifndef CANONICAL_FILTER_H
-#define CANONICAL_FILTER_H
+#ifndef DSP_CANONICAL_FILTER_H_INCLUDED
+#define DSP_CANONICAL_FILTER_H_INCLUDED
 
 /* canonical filter for signal processing */
 
@@ -23,4 +23,4 @@ void canfltr_destroy(struct canfltr *s);
 /* process one sample through canonical filter */
 float canfltr_sample(struct canfltr *state, float x);
 
-#endif /* CANONICAL_FILTER_H */
+#endif

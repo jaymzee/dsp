@@ -1,5 +1,5 @@
-#ifndef WAVE_H
-#define WAVE_H
+#ifndef DSP_WAVE_H_INCLUDED
+#define DSP_WAVE_H_INCLUDED
 
 /* RIFF WAVE file format */
 
@@ -44,4 +44,4 @@ int wave_filter(const char *infile, const char *outfile,
 #define WAVE_ALAW    6
 #define WAVE_uLAW    7
 
-#endif /* WAVE_H */
+#endif
