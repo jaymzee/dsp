@@ -24,7 +24,7 @@ static long read_fmt(struct wave *fmt, const char *fn, FILE *fp)
     if (bytecount < fmt->fmt_size + 4) {
         long skip = fmt->fmt_size + 4 - bytecount;
         fprintf(stderr,
-                "%s: skipping extra %ld bytes at end of chunk fmt\n", 
+                "%s: skipping extra %ld bytes at end of chunk fmt\n",
                 fn, skip);
         fseek(fp, skip, SEEK_CUR);
         bytecount += skip;
@@ -45,6 +45,32 @@ static long read_data(struct wave *fmt, const char *fn, FILE *fp)
        since this is the last chunk */
 
     return bytecount;
+}
+
+/*
+ * wave_format_str() - string representation of wave format type
+ * buf: buffer to store string into
+ * format: wave format number
+ */
+char *wave_format_str(char *buf, int format)
+{
+    switch (format) {
+    case WAVE_PCM:
+        sprintf(buf, "%d (PCM)", format);
+        break;
+    case WAVE_FLOAT:
+        sprintf(buf, "%d (IEEE float)", format);
+        break;
+    case WAVE_ALAW:
+        sprintf(buf, "%d (8 bit A-law)", format);
+        break;
+    case WAVE_uLAW:
+        sprintf(buf, "%d (8 bit mu-law)", format);
+        break;
+    default:
+        sprintf(buf, "%d (unknown)", format);
+    }
+    return buf;
 }
 
 /*
@@ -128,25 +154,10 @@ long wave_write_header(const struct wave *fmt, FILE *fp)
  */
 void wave_print_header(const struct wave *fmt)
 {
+    char buf[64];
+
     printf("file length: %u\n", fmt->riff_size + 8);
-    printf("format: ");
-    switch (fmt->format) {
-    case WAVE_PCM:
-        printf("PCM");
-        break;
-    case WAVE_FLOAT:
-        printf("IEEE float");
-        break;
-    case WAVE_ALAW:
-        printf("8 bit A-law");
-        break;
-    case WAVE_uLAW:
-        printf("8 bit mu-law");
-    default:
-        printf("unknown %d", fmt->format);
-        break;
-    }
-    printf("\n");
+    printf("format: %s\n", wave_format_str(buf, fmt->format));
     printf("channels: %d\n", fmt->channels);
     printf("sample rate: %d\n", fmt->samplerate);
     printf("byte rate: %d\n", fmt->byterate);
@@ -304,10 +315,10 @@ static void filter_float2pcm(FILE *fpi, FILE *fpo,
 int wave_filter(const char *infile, const char *outfile,
                 filter_func f, void *state, int format, double t)
 {
-    FILE *fpi, *fpo;
-    struct wave in, out;
-    long data_offset;
-    unsigned int Nin, Nout;
+    FILE *fpi, *fpo;        /* file pointers */
+    struct wave in, out;    /* wave file headers */
+    unsigned int Nin, Nout; /* number of samples for in and out */
+    char cbuf[64];          /* character buffer for string formatting */
 
     fpi = fopen(infile, "rb");
     if (!fpi) {
@@ -319,8 +330,7 @@ int wave_filter(const char *infile, const char *outfile,
         perror(outfile);
         return 1;
     }
-    data_offset = wave_read_header(&in, infile, fpi);
-    if (!data_offset) {
+    if (!wave_read_header(&in, infile, fpi)) {
         return 2;
     }
     if (in.channels != 1) {
@@ -328,7 +338,8 @@ int wave_filter(const char *infile, const char *outfile,
         return 4;
     }
     if (format != WAVE_PCM && format != WAVE_FLOAT) {
-        fprintf(stderr, "unsupported output format %d\n", format);
+        fprintf(stderr, "unsupported output format %s\n",
+                wave_format_str(cbuf, format));
         return 4;
     }
 
@@ -367,7 +378,8 @@ int wave_filter(const char *infile, const char *outfile,
     return 0;
 
 fail:
-    fprintf(stderr, "%s: filter from %d to %d unsupported\n",
-            infile, in.format, out.format);
+    fprintf(stderr, "%s: filter ", infile);
+    fprintf(stderr, "from: %s to: ", wave_format_str(cbuf, in.format));
+    fprintf(stderr, "%s is unsupported\n", wave_format_str(cbuf, out.format));
     return 4;
 }
