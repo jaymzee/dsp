@@ -3,19 +3,19 @@
 
 /* canonical filter for signal processing */
 
-#include "filter.h"
+#include <stddef.h>
 
 /* canonical filter state */
 struct canfltr {
     double *w;      /* delay line */
     double *a;      /* a coefficients - feedback */
     double *b;      /* b coefficients - feed forward */
-    unsigned N;     /* length of w, a, b */
+    size_t N;       /* length of w, a, b */
 };
 
 /* allocate and initialize state object */
 struct canfltr *
-canfltr_create(unsigned N, double *b, double *a);
+canfltr_create(size_t N, double *b, double *a);
 
 /* free state object */
 void canfltr_destroy(struct canfltr *s);

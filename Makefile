@@ -14,14 +14,14 @@ wavCanFilt: wavCanFilt.o wave.o CanonicalFilter.o
 	$(CXX) -o $@ $^ $(LFLAGS)
 wavReverb: wavReverb.o wave.o CircularFilter.o
 	$(CXX) -o $@ $^ $(LFLAGS)
-wavFlanger: wavFlanger.o wave.o FlangerFilter.o FractionalDelay.o
+wavFlanger: wavFlanger.o wave.o FractionalDelay.o
 	$(CXX) -o $@ $^ -lm $(LFLAGS)
 
 wavCanFilt.o: wavCanFilt.cpp Wave.hpp CanonicalFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 wavReverb.o: wavReverb.cpp Wave.hpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
-wavFlanger.o: wavFlanger.cpp Wave.hpp FlangerFilter.h
+wavFlanger.o: wavFlanger.cpp Wave.hpp Flanger.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 
 CanonicalFilter.o: CanonicalFilter.cpp CanonicalFilter.h
@@ -29,8 +29,6 @@ CanonicalFilter.o: CanonicalFilter.cpp CanonicalFilter.h
 CircularFilter.o: CircularFilter.cpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 FractionalDelay.o: FractionalDelay.cpp FractionalDelay.h
-	$(CXX) $(CXXFLAGS) -c $<
-FlangerFilter.o: FlangerFilter.cpp FlangerFilter.h FractionalDelay.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 wav_flanger: wav_flanger.o wave.o fractional_delay.o

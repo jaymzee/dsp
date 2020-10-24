@@ -15,21 +15,25 @@ namespace dsp {
  */
 class CircularFilter: public dsp::IFilter {
     std::vector<double> w_;         /* delay line buffer */
-    unsigned offset_;               /* current start of buffer within w */
+    size_t offset_;                 /* current start of buffer within w */
 public:
-    std::map<unsigned, double> b;   /* feedforward coefficients */
-    std::map<unsigned, double> a;   /* feedback coefficients */
-    CircularFilter(unsigned length);
-    CircularFilter& operator--();   /* advance delay line by one sample */
-    void Shift();                   /* advance delay line by one sample */
-    CircularFilter& operator++();   /* retreat delay line by one sample */
-    void Unshift();                 /* retreat delay line by one sample */
-    double& operator[](unsigned n); /* reference to w[n modulo] */
-    double& w(unsigned n);          /* reference to w[n modulo] */
-    unsigned Length();              /* length of delay line */
-    float ProcessSample(float x);   /* process one sample through filter */
+    const size_t N;                 /* length of delay line */
+    std::map<size_t, double> b;     /* feedforward coefficients */
+    std::map<size_t, double> a;     /* feedback coefficients */
+    // construct size n delay line
+    CircularFilter(size_t n) : w_(n), offset_(0), N(n) {}
+    // advance delay line by one sample
+    void Shift() { if (--offset_ < 0) offset_ += N; }
+    // retreat delay line by one sample
+    void Unshift() { if (++offset_ > N) offset_ -= N; }
+    // return reference to w[n] (offset and modulo wrap w[n])
+    double& operator[](size_t n) { return w_[(offset_ + n) % N]; }
+    // return reference to w[n] (offset and modulo wrap w[n])
+    double& w(size_t n) { return w_[(offset_ + n) % N]; }
+    /* process one sample through filter */
+    float ProcessSample(float x);
 };
 
-}
+} // namespace dsp
 
 #endif

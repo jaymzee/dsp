@@ -9,9 +9,9 @@ namespace dsp {
 /* canonical filter for signal processing */
 class CanonicalFilter: public IFilter {
 public:
-    CanonicalFilter(unsigned len,
+    CanonicalFilter(size_t n,
                     std::vector<double> b,
-                    std::vector<double> a) : w(len), b(b), a(a) {}
+                    std::vector<double> a) : w(n), b(b), a(a) {}
     std::vector<double> w;  /* delay line */
     std::vector<double> b;  /* b coefficients - feed forward */
     std::vector<double> a;  /* a coefficients - feedback */
