@@ -10,7 +10,7 @@ namespace dsp {
 
 /* callback for wave_filter()
  */
-float WaveFilterCallback(IFilter *f, float x) {
+inline float WaveFilterCallback(IFilter *f, float x) {
     return f->ProcessSample(x);
 }
 
@@ -20,7 +20,7 @@ float WaveFilterCallback(IFilter *f, float x) {
  * format: output wav file format type
  * duration: length of time to use input wav file as the source
  */
-int WaveFilter(const char *infile, const char *outfile,
+inline int WaveFilter(const char *infile, const char *outfile,
                IFilter* f, int format, double duration) {
     return wave_filter(infile, outfile,
                        (filter_func)WaveFilterCallback, f,
