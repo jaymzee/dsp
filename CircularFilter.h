@@ -5,13 +5,15 @@
 #include <vector>
 #include <map>
 
+namespace dsp {
+
 /*
  * circular buffer implementation of a canonical filter (CPP)
  * since w is likely to be a large buffer, the arrays for
  * a and b are sparse, thus filtering is very efficient when
  * there are a small number of non-zero coefficients for a and b
  */
-class CircularFilter: public IFilter {
+class CircularFilter: public dsp::IFilter {
     std::vector<double> w_;         /* delay line buffer */
     unsigned offset_;               /* current start of buffer within w */
 public:
@@ -27,5 +29,7 @@ public:
     unsigned Length();              /* length of delay line */
     float ProcessSample(float x);   /* process one sample through filter */
 };
+
+}
 
 #endif

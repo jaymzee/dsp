@@ -4,6 +4,8 @@
 #define PI 3.14159265358979323846
 #define FS 44100
 
+namespace dsp {
+
 // process one sample
 float Flanger::ProcessSample(float x) {
     const int N = w.Length();
@@ -16,4 +18,6 @@ float Flanger::ProcessSample(float x) {
     --w;
 
     return y;
+}
+
 }

@@ -4,6 +4,8 @@
 #include "IFilter.h"
 #include <vector>
 
+namespace dsp {
+
 /* canonical filter for signal processing */
 class CanonicalFilter: public IFilter {
 public:
@@ -18,4 +20,5 @@ public:
     float ProcessSample(float x);
 };
 
+}
 #endif

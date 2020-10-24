@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-CanonicalFilter f(3, {0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
+dsp::CanonicalFilter f(3, {0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
 
 int main(int argc, char *argv[])
 {
@@ -16,5 +16,7 @@ int main(int argc, char *argv[])
     infile = argv[1];
     outfile = argv[2];
 
-    return WaveFilter(infile, outfile, &f, WAVE_PCM, 0.0);
+    int rv = WaveFilter(infile, outfile, &f, WAVE_PCM, 0.0);
+
+    return rv;
 }

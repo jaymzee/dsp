@@ -1,4 +1,7 @@
 #include "CircularFilter.h"
+
+namespace dsp {
+
 /*
  * CircularFilter::CircularFilter() - construct a CircularFilter
  * length: length of delay line
@@ -102,4 +105,6 @@ float CircularFilter::ProcessSample(float x)
 
     Shift();
     return y;
+}
+
 }

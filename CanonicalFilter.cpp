@@ -6,6 +6,9 @@
  *
  * Return: output sample
  */
+
+namespace dsp {
+
 float CanonicalFilter::ProcessSample(float x)
 {
     double y, w0;
@@ -25,3 +28,4 @@ float CanonicalFilter::ProcessSample(float x)
     return y;
 }
 
+}

@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     const char *infile = argv[1];
     const char *outfile = argv[2];
 
-    CircularFilter f(5000);
+    dsp::CircularFilter f(5000);
     f.b[1] = 0.4;
     f.b[3500] = 0.4;
     f.a[3000] = 0.6;
