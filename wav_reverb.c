@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-size_t b_i[2] = {1, 3500};
-double b_v[2]  = {0.4, 0.4};
-size_t a_i[1] = {3000};
-double a_v[1]  = {0.6};
+int     b_i[2] = {1, 3500};
+double  b_v[2] = {0.4, 0.4};
+int     a_i[1] = {3000};
+double  a_v[1] = {0.6};
 
 int main(int argc, char *argv[])
 {

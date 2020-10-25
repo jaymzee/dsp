@@ -9,18 +9,19 @@ namespace dsp {
  */
 
 class FractionalDelay {
-    std::vector<double> w_;         /* delay line */
-    size_t offset_;                 /* current start of buffer within w */
+    std::vector<double> w;  /* delay line */
+    int offset;             /* current start of buffer within w */
+    int N;
 public:
-    const size_t N;
-    FractionalDelay(size_t n) : w_(n), offset_(0), N(n) {}
+    FractionalDelay(int n) : w(n), offset(0), N(n) {}
     /* (advance delay line by one sample) */
-    void Shift() { if (--offset_ < 0) offset_ += N; }
+    void Shift() { if (--offset < 0) offset += N; }
     /* (retreat delay line by one sample) */
-    void Unshift() { if (++offset_ > N) offset_ -= N; }
-    double operator[](double n);    /* interpolate w[n] */
+    void Unshift() { if (++offset > N) offset -= N; }
+    /* interpolate w[n] */
+    double operator[](double n);
     /* reference to w[n] */
-    double& operator[](int n) { return w_[(offset_ + n) % N]; }
+    double& operator[](int n) { return w[(offset + n) % N]; }
 };
 
 }

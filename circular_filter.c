@@ -15,8 +15,8 @@
  * Return: the initialized state structure for the filter
  */
 struct cirfltr *
-cirfltr_create(size_t N, size_t Nb, size_t *b_indx, double *b_val,
-               size_t Na, size_t *a_indx, double *a_val)
+cirfltr_create(int N, int Nb, int *b_indx, double *b_val,
+               int Na, int *a_indx, double *a_val)
 {
     struct cirfltr *s;
     s = malloc(sizeof(struct cirfltr));
@@ -83,7 +83,7 @@ void cirfltr_inc(struct cirfltr *s)
  *
  * Return: pointer to w[n]
  */
-double * cirfltr_w(struct cirfltr *s, size_t n)
+double * cirfltr_w(struct cirfltr *s, int n)
 {
     return s->w + ((s->offset + n) % s->N);
 }
@@ -99,7 +99,7 @@ float cirfltr_sample(struct cirfltr *fs, float x)
 {
     double y;
     double w0;
-    size_t n;
+    int n;
 
     w0 = x;
     for (n = 0; n < fs->Na; n++)

@@ -5,15 +5,15 @@
 namespace dsp {
 
 class Flanger: public IFilter {
-public:
-    const double T;     // sample period
-    const int N;        // length of delay line
     FractionalDelay w;  // delay line
+    int N;              // length of delay line
+public:
+    double T;           // sample period
     double rate;        // rate of flanger
     double phase;       // current phase of flanger (time)
 
-    Flanger(size_t n, int fs, double rate = 0.0) :
-        T(1.0 / fs), N(n), w(n), rate(rate), phase(0.0) {}
+    Flanger(int n, int fs, double rate = 0.0) :
+        w(n), N(n), T(1.0 / fs), rate(rate), phase(0.0) {}
 
     // process one sample
     float ProcessSample(float x) {

@@ -9,7 +9,7 @@
  * Return: the initialized state structure for the filter
  */
 struct fracdelay *
-fracdelay_create(unsigned N)
+fracdelay_create(int N)
 {
     struct fracdelay *s;
     s = malloc(sizeof(*s));

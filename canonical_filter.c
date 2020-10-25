@@ -11,7 +11,7 @@
  * Return: the initialized state structure for the filter
  */
 struct canfltr *
-canfltr_create(size_t N, double *b, double *a)
+canfltr_create(int N, double *b, double *a)
 {
     struct canfltr *s;
     s = malloc(sizeof(struct canfltr));
@@ -46,7 +46,7 @@ void canfltr_destroy(struct canfltr *s)
  */
 float canfltr_sample(struct canfltr *state, float x)
 {
-    unsigned n, N = state->N;
+    int n, N = state->N;
     double *w = state->w;
     double *a = state->a;
     double *b = state->b;

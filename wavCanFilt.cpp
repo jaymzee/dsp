@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-dsp::CanonicalFilter f(3, {0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
+dsp::CanonicalFilter f({0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
 
 int main(int argc, char *argv[])
 {
