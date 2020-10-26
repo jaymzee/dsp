@@ -1,5 +1,5 @@
-#include "Wave.hpp"
 #include "CircularFilter.h"
+#include "Wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 

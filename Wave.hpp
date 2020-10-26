@@ -4,13 +4,13 @@
 extern "C" {
 #include "wave.h"
 }
-#include "IFilter.h"
+#include "Filter.hpp"
 
 namespace dsp {
 
 /* callback for wave_filter()
  */
-inline float WaveFilterCallback(IFilter *f, float x) {
+inline float WaveFilterProcessSample(Filter *f, float x) {
     return f->ProcessSample(x);
 }
 
@@ -21,9 +21,9 @@ inline float WaveFilterCallback(IFilter *f, float x) {
  * duration: length of time to use input wav file as the source
  */
 inline int WaveFilter(const char *infile, const char *outfile,
-               IFilter* f, int format, double duration) {
+                      Filter* f, int format, double duration) {
     return wave_filter(infile, outfile,
-                       (filter_func)WaveFilterCallback, f,
+                       (filter_func)WaveFilterProcessSample, f,
                        format, duration);
 }
 

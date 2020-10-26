@@ -1,4 +1,5 @@
 #include "CanonicalFilter.h"
+#include <algorithm>
 
 /*
  * CanonicalFilter::sample() - process one sample through canonical filter
@@ -8,6 +9,12 @@
  */
 
 namespace dsp {
+
+CanonicalFilter::CanonicalFilter(std::vector<double>b,
+                                 std::vector<double>a) :
+    w(std::max(b.size(), a.size())), b(b), a(a)
+{
+}
 
 float CanonicalFilter::ProcessSample(float x)
 {

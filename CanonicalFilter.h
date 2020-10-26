@@ -1,19 +1,16 @@
 #ifndef DSP_CANONICALFILTER_H_INCLUDED
 #define DSP_CANONICALFILTER_H_INCLUDED
 
-#include "IFilter.h"
+#include "Filter.hpp"
 #include <vector>
-#include <algorithm>
 
 namespace dsp {
 
 /* canonical filter for signal processing */
-class CanonicalFilter: public IFilter {
+class CanonicalFilter: public Filter {
     std::vector<double> w;  /* delay line */
 public:
-    CanonicalFilter(std::vector<double> b,
-                    std::vector<double> a) :
-                    w(std::max(a.size(), b.size())), b(b), a(a) {}
+    CanonicalFilter(std::vector<double> b, std::vector<double> a);
     std::vector<double> b;  /* b coefficients - feed forward */
     std::vector<double> a;  /* a coefficients - feedback */
 

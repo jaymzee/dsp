@@ -2,6 +2,10 @@
 
 namespace dsp {
 
+CircularFilter::CircularFilter(int n) : w_(n), offset(0), N(n)
+{
+}
+
 /*
  * CircularFilter::ProcessSample() process one sample
  * x: input sample

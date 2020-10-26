@@ -12,5 +12,5 @@ int main(int argc, char *argv[])
 
     dsp::Flanger f(200, 0.125, 44100);
 
-    return dsp::WaveFilter(argv[1], argv[2], &f, WAVE_PCM, 0.0);
+    return WaveFilter(argv[1], argv[2], &f, WAVE_PCM, 0.0);
 }

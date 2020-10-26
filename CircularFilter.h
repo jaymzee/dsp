@@ -1,7 +1,7 @@
 #ifndef DSP_CIRCULARFILTER_H_INCLUDED
 #define DSP_CIRCULARFILTER_H_INCLUDED
 
-#include "IFilter.h"
+#include "Filter.hpp"
 #include <vector>
 #include <map>
 
@@ -13,7 +13,7 @@ namespace dsp {
  * a and b are sparse, thus filtering is very efficient when
  * there are a small number of non-zero coefficients for a and b
  */
-class CircularFilter: public dsp::IFilter {
+class CircularFilter: public dsp::Filter {
     std::vector<double> w_;         /* delay line buffer */
     int offset;                     /* current start of buffer within w */
     int N;                          /* length of delay line */
@@ -21,7 +21,7 @@ public:
     std::map<int, double> b;        /* feedforward coefficients */
     std::map<int, double> a;        /* feedback coefficients */
     // construct size n delay line
-    CircularFilter(int n) : w_(n), offset(0), N(n) {}
+    CircularFilter(int n);
     // advance delay line by one sample
     void Shift() { if (--offset < 0) offset += N; }
     // retreat delay line by one sample

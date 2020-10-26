@@ -1,5 +1,5 @@
-#include "Wave.hpp"
 #include "CanonicalFilter.h"
+#include "Wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 
@@ -16,7 +16,5 @@ int main(int argc, char *argv[])
     infile = argv[1];
     outfile = argv[2];
 
-    int rv = WaveFilter(infile, outfile, &f, WAVE_PCM, 0.0);
-
-    return rv;
+    return WaveFilter(infile, outfile, &f, WAVE_PCM, 0.0);
 }

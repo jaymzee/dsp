@@ -1,10 +1,10 @@
-#include "IFilter.h"
+#include "Filter.hpp"
 #include "FractionalDelay.h"
 #include <cmath>
 
 namespace dsp {
 
-class Flanger: public IFilter {
+class Flanger: public Filter {
     FractionalDelay w;  // delay line
     int N;              // length of delay line
 public:

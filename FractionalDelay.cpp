@@ -1,6 +1,11 @@
 #include "FractionalDelay.h"
 
 namespace dsp {
+
+FractionalDelay::FractionalDelay(int n) : w(n), offset(0), N(n)
+{
+}
+
 /*
  * FractionalDelay::operator[](double) - interpolate tap[n]
  * n: index of delay line tap, must be >= 0 but may have a fractional part
