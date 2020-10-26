@@ -6,17 +6,21 @@
 
 namespace dsp {
 
-/* canonical filter for signal processing */
+/* canonical filter for signal processing
+ * a[0] should always be 1.0
+ * an FIR only filter can be defined using the b vector and a = {1.0}
+ * an IIR only filter can be defined using the a vector and b = {1.0}
+ */
 class CanonicalFilter: public Filter {
-    std::vector<double> w;  /* delay line */
+    std::vector<double> w;  // delay line
 public:
-    CanonicalFilter(std::vector<double> b, std::vector<double> a);
-    std::vector<double> b;  /* b coefficients - feed forward */
-    std::vector<double> a;  /* a coefficients - feedback */
+    std::vector<double> b;  // b coefficients - feed forward
+    std::vector<double> a;  // a coefficients - feedback
 
-    /* process one sample through filter */
-    float ProcessSample(float x);
+    CanonicalFilter(std::vector<double> b, std::vector<double> a);
+    float ProcessSample(float x); // process one sample through filter
 };
 
 }
+
 #endif

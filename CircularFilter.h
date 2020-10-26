@@ -13,13 +13,14 @@ namespace dsp {
  * a and b are sparse, thus filtering is very efficient when
  * there are a small number of non-zero coefficients for a and b
  */
-class CircularFilter: public dsp::Filter {
-    std::vector<double> w_;         /* delay line buffer */
-    int offset;                     /* current start of buffer within w */
-    int N;                          /* length of delay line */
+class CircularFilter: public Filter {
+    std::vector<double> w_;     // delay line buffer
+    int offset;                 // current start of buffer within w
+    int N;                      // length of delay line
 public:
-    std::map<int, double> b;        /* feedforward coefficients */
-    std::map<int, double> a;        /* feedback coefficients */
+    std::map<int, double> b;    // feedforward coefficients
+    std::map<int, double> a;    // feedback coefficients
+
     // construct size n delay line
     CircularFilter(int n);
     // advance delay line by one sample
@@ -30,7 +31,7 @@ public:
     double& operator[](int n) { return w_[(offset + n) % N]; }
     // return reference to w[n] (offset and modulo wrap w[n])
     double& w(int n) { return w_[(offset + n) % N]; }
-    /* process one sample through filter */
+    // process one sample through filter
     float ProcessSample(float x);
 };
 
