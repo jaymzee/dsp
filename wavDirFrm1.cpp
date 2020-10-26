@@ -1,9 +1,9 @@
-#include "CanonicalFilter.h"
+#include "DirectFormFilter.h"
 #include "Wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 
-dsp::CanonicalFilter f({0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
+dsp::DirectForm1Filter f({0.2, 0.2, 0.2}, {1.0, 0.3, 0.3});
 
 int main(int argc, char *argv[])
 {

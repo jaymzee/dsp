@@ -5,26 +5,26 @@ CXXFLAGS = -O2 -std=c++11 -pedantic -Wall
 LFLAGS = -s
 OBJSBASIC = wavdump wav_write
 OBJSFLTRC = wav_can_filt wav_reverb wav_flanger
-OBJSFLTRCPP = wavCanFilt wavReverb wavFlanger
+OBJSFLTRCPP = wavDirFrm1 wavReverb wavFlanger
 OBJS = $(OBJSBASIC) $(OBJSFLTRC) $(OBJSFLTRCPP)
 
 all: $(OBJS)
 
-wavCanFilt: wavCanFilt.o wave.o CanonicalFilter.o
+wavDirFrm1: wavDirFrm1.o wave.o DirectFormFilter.o
 	$(CXX) -o $@ $^ $(LFLAGS)
 wavReverb: wavReverb.o wave.o CircularFilter.o
 	$(CXX) -o $@ $^ $(LFLAGS)
 wavFlanger: wavFlanger.o wave.o FractionalDelay.o
 	$(CXX) -o $@ $^ -lm $(LFLAGS)
 
-wavCanFilt.o: wavCanFilt.cpp Wave.hpp CanonicalFilter.h
+wavDirFrm1.o: wavDirFrm1.cpp Wave.hpp DirectFormFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 wavReverb.o: wavReverb.cpp Wave.hpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 wavFlanger.o: wavFlanger.cpp Wave.hpp Flanger.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 
-CanonicalFilter.o: CanonicalFilter.cpp CanonicalFilter.h
+DirectFormFilter.o: DirectFormFilter.cpp DirectFormFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 CircularFilter.o: CircularFilter.cpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
