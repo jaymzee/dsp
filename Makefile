@@ -1,28 +1,25 @@
 CC = gcc
 CXX = g++
 CFLAGS = -O2 -std=c89 -pedantic -Wall
-CXXFLAGS = -O2 -std=c++11 -pedantic -Wall
-LFLAGS = -s
+CXXFLAGS = -g -O2 -std=c++11 -pedantic -Wall
+LFLAGS =
 OBJSBASIC = wavdump wav_write
 OBJSFLTRC = wav_can_filt wav_reverb wav_flanger
-OBJSFLTRCPP = wavDirFrm1 wavReverb wavFlanger
+OBJSFLTRCPP = wavDirFrm1 wavDirFrm2 wavDirFrm2T wavReverb wavFlanger
 OBJS = $(OBJSBASIC) $(OBJSFLTRC) $(OBJSFLTRCPP)
 
 all: $(OBJS)
 
-wavDirFrm1: wavDirFrm1.o wave.o DirectFormFilter.o
-	$(CXX) -o $@ $^ $(LFLAGS)
-wavReverb: wavReverb.o wave.o CircularFilter.o
-	$(CXX) -o $@ $^ $(LFLAGS)
-wavFlanger: wavFlanger.o wave.o FractionalDelay.o
-	$(CXX) -o $@ $^ -lm $(LFLAGS)
-
-wavDirFrm1.o: wavDirFrm1.cpp Wave.hpp DirectFormFilter.h
-	$(CXX) $(CXXFLAGS) -c $<
-wavReverb.o: wavReverb.cpp Wave.hpp CircularFilter.h
-	$(CXX) $(CXXFLAGS) -c $<
-wavFlanger.o: wavFlanger.cpp Wave.hpp Flanger.hpp
-	$(CXX) $(CXXFLAGS) -c $<
+wavDirFrm1: wavDirFrm1.cpp wave.o DirectFormFilter.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
+wavDirFrm2: wavDirFrm2.cpp wave.o DirectFormFilter.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
+wavDirFrm2T: wavDirFrm2T.cpp wave.o DirectFormFilter.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
+wavReverb: wavReverb.cpp wave.o CircularFilter.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
+wavFlanger: wavFlanger.cpp wave.o FractionalDelay.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ -lm $(LFLAGS)
 
 DirectFormFilter.o: DirectFormFilter.cpp DirectFormFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
