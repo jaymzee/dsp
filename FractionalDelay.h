@@ -5,7 +5,7 @@
 
 namespace dsp {
 /*
- * circular buffer implementation of a fractional delay line (CPP)
+ * circular buffer implementation of a fractional delay line
  */
 
 class FractionalDelay {

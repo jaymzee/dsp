@@ -8,10 +8,13 @@
 namespace dsp {
 
 /*
- * circular buffer implementation of a canonical filter (CPP)
+ * circular buffer implementation of a canonical filter (direct form II)
  * since w is likely to be a large buffer, the arrays for
  * a and b are sparse, thus filtering is very efficient when
- * there are a small number of non-zero coefficients for a and b
+ * there are a small number of non-zero coefficients for a and b.
+ * The shift operation is also efficient since a pointer (offset) is
+ * decremented instead of moving values down through all the taps.
+ * The offset is used to compute where w[0] actually is within the w_ buffer.
  */
 class CircularFilter: public Filter {
     std::vector<double> w_;     // delay line buffer
