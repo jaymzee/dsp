@@ -44,7 +44,7 @@ void canfltr_destroy(struct canfltr *s)
  *
  * Return: output sample
  */
-float canfltr_sample(struct canfltr *state, float x)
+double canfltr_sample(struct canfltr *state, double x)
 {
     int n, N = state->N;
     double *w = state->w;

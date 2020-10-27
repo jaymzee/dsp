@@ -39,6 +39,6 @@ void cirfltr_inc(struct cirfltr *s);
 double * cirfltr_w(struct cirfltr *s, int n);
 
 /* process one sample through circular filter */
-float cirfltr_sample(struct cirfltr *s, float x);
+double cirfltr_sample(struct cirfltr *s, double x);
 
 #endif /* CIRCULAR_FILTER_H */

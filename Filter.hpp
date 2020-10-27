@@ -10,7 +10,7 @@ const double pi = 3.14159265358979323846;
  */
 class Filter {
 public:
-    virtual float ProcessSample(float x) = 0;
+    virtual double ProcessSample(double x) = 0;
 };
 
 }

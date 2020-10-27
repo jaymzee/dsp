@@ -38,6 +38,6 @@ canfltr_create(int N, double *b, double *a);
 void canfltr_destroy(struct canfltr *s);
 
 /* process one sample through canonical filter */
-float canfltr_sample(struct canfltr *state, float x);
+double canfltr_sample(struct canfltr *state, double x);
 
 #endif

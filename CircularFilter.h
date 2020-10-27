@@ -35,7 +35,7 @@ public:
     // return reference to w[n] (offset and modulo wrap w[n])
     double& w(int n) { return w_[(offset + n) % N]; }
     // process one sample through filter
-    float ProcessSample(float x);
+    double ProcessSample(double x);
 };
 
 } // namespace dsp

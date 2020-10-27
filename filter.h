@@ -8,6 +8,6 @@
  *
  * Return: output sample
  */
-typedef float (*filter_func)(void *state, float x);
+typedef double (*filter_func)(void *state, double x);
 
 #endif /* FILTER_H */

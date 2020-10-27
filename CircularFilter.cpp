@@ -12,7 +12,7 @@ CircularFilter::CircularFilter(int n) : w_(n), offset(0), N(n)
  *
  * Return: output sample
  */
-float CircularFilter::ProcessSample(float x)
+double CircularFilter::ProcessSample(double x)
 {
     double y, w0;
 

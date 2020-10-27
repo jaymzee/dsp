@@ -14,7 +14,7 @@ DirectForm1Filter::DirectForm1Filter(std::vector<double>b,
  *
  * Return: output sample
  */
-float DirectForm1Filter::ProcessSample(float x0)
+double DirectForm1Filter::ProcessSample(double x0)
 {
     double yz = 0.0, yp = 0.0;  // partial sums
 
@@ -38,7 +38,7 @@ float DirectForm1Filter::ProcessSample(float x0)
 }
 
 DirectForm2Filter::DirectForm2Filter(std::vector<double>b,
-                                       std::vector<double>a) :
+                                     std::vector<double>a) :
     w(std::max(b.size(), a.size())), b(b), a(a)
 {
 }
@@ -48,7 +48,7 @@ DirectForm2Filter::DirectForm2Filter(std::vector<double>b,
  *
  * Return: output sample
  */
-float DirectForm2Filter::ProcessSample(float x)
+double DirectForm2Filter::ProcessSample(double x)
 {
     double y = 0.0;
     double w0 = x;
@@ -86,7 +86,7 @@ DirectForm2TFilter::DirectForm2TFilter(std::vector<double>b,
  *
  * Return: output sample
  */
-float DirectForm2TFilter::ProcessSample(float x)
+double DirectForm2TFilter::ProcessSample(double x)
 {
     const int M = v.size() - 1;
 

@@ -16,7 +16,7 @@ public:
         w(n), N(n), T(1.0 / fs), rate(rate), phase(0.0) {}
 
     // process one sample
-    float ProcessSample(float x) {
+    double ProcessSample(double x) {
         double n, y;
 
         w[0] = x;

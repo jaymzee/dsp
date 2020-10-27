@@ -13,7 +13,7 @@ struct flanger
     struct fracdelay *delay;
 };
 
-float flanger_sample(struct flanger *f, float x)
+double flanger_sample(struct flanger *f, double x)
 {
     struct fracdelay *delay = f->delay;
     const int N = delay->N;

@@ -10,7 +10,7 @@ namespace dsp {
 
 /* callback for wave_filter()
  */
-inline float WaveFilterProcessSample(Filter *f, float x) {
+inline double WaveFilterProcessSample(Filter *f, double x) {
     return f->ProcessSample(x);
 }
 

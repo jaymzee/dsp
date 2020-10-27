@@ -43,7 +43,7 @@ public:
     std::vector<double> a;  // a coefficients - feedback
 
     DirectForm1Filter(std::vector<double> b, std::vector<double> a);
-    float ProcessSample(float x); // process one sample through filter
+    double ProcessSample(double x); // process one sample through filter
 };
 
 /* DirectfForm2Filter
@@ -77,7 +77,7 @@ public:
     std::vector<double> a;  // a coefficients - feedback
 
     DirectForm2Filter(std::vector<double> b, std::vector<double> a);
-    float ProcessSample(float x); // process one sample through filter
+    double ProcessSample(double x); // process one sample through filter
 };
 
 /* DirectForm1TFilter - transposed direct form I
@@ -130,7 +130,7 @@ public:
     std::vector<double> a;  // a coefficients - poles
 
     DirectForm2TFilter(std::vector<double> b, std::vector<double> a);
-    float ProcessSample(float x); // process one sample through filter
+    double ProcessSample(double x); // process one sample through filter
 };
 
 }

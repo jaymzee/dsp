@@ -95,7 +95,7 @@ double * cirfltr_w(struct cirfltr *s, int n)
  *
  * Return: output sample
  */
-float cirfltr_sample(struct cirfltr *fs, float x)
+double cirfltr_sample(struct cirfltr *fs, double x)
 {
     double y;
     double w0;
