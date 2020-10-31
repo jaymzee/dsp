@@ -5,7 +5,7 @@ CXXFLAGS = -g -O2 -std=c++11 -pedantic -Wall
 LFLAGS =
 OBJSBASIC = wavdump wav_write
 OBJSFLTRC = wav_can_filt wav_reverb wav_flanger
-OBJSFLTRCPP = wavDirFrm1 wavDirFrm2 wavDirFrm2T wavReverb wavFlanger
+OBJSFLTRCPP = wavDirFrm1 wavDirFrm2 wavDirFrm2T wavBiQuad wavReverb wavFlanger
 OBJS = $(OBJSBASIC) $(OBJSFLTRC) $(OBJSFLTRCPP)
 
 all: $(OBJS)
@@ -16,12 +16,16 @@ wavDirFrm2: wavDirFrm2.cpp wave.o DirectFormFilter.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
 wavDirFrm2T: wavDirFrm2T.cpp wave.o DirectFormFilter.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
+wavBiQuad: wavBiQuad.cpp wave.o BiQuadFilter.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
 wavReverb: wavReverb.cpp wave.o CircularFilter.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)
 wavFlanger: wavFlanger.cpp wave.o FractionalDelay.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lm $(LFLAGS)
 
 DirectFormFilter.o: DirectFormFilter.cpp DirectFormFilter.h
+	$(CXX) $(CXXFLAGS) -c $<
+BiQuadFilter.o: BiQuadFilter.cpp BiQuadFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
 CircularFilter.o: CircularFilter.cpp CircularFilter.h
 	$(CXX) $(CXXFLAGS) -c $<
