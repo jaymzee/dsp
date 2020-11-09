@@ -8,7 +8,7 @@ namespace dsp {
 BiQuadFilter::BiQuadFilter(
     std::array<double,3>b,
     std::array<double,3>a
-): x{}, y{}, b(b), a(a)
+): x1{}, x2{}, y1{}, y2{}, b(b), a(a)
 {
 }
 
@@ -17,17 +17,16 @@ BiQuadFilter::BiQuadFilter(
 // Return: output sample
 double BiQuadFilter::ProcessSample(double x0)
 {
-    double yz = b[0] * x0 + b[1] * x[1] + b[2] * x[2];
-    double yp = -a[1] * y[1] - a[2] * y[2];
-    x[0] = x0;
-    y[0] = yz + yp;
+    double yz = b[0] * x0 + b[1] * x1 + b[2] * x2;
+    double yp = -a[1] * y1 - a[2] * y2;
+    double y0 = yz + yp;
 
-    x[2] = x[1];
-    x[1] = x[0];
-    y[2] = y[1];
-    y[1] = y[0];
+    x2 = x1;
+    x1 = x0;
+    y2 = y1;
+    y1 = y0;
 
-    return y[0];
+    return y0;
 }
 
 } // namespace dsp
