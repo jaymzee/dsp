@@ -2,7 +2,8 @@
 
 namespace dsp {
 
-FractionalDelay::FractionalDelay(int n) : w(n), offset(0), N(n)
+FractionalDelay::FractionalDelay(int n)
+: w(n), offset{}, N{n}
 {
 }
 

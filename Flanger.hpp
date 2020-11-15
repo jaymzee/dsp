@@ -12,8 +12,8 @@ public:
     double rate;        // rate of flanger
     double phase;       // current phase of flanger (time)
 
-    Flanger(int n, int fs, double rate = 0.0) :
-        w(n), N(n), T(1.0 / fs), rate(rate), phase(0.0) {}
+    Flanger(int n, int fs, double rate = 0.0)
+    : w(n), N{n}, T{1.0 / fs}, rate{rate}, phase{} {}
 
     // process one sample
     double ProcessSample(double x) {

@@ -5,10 +5,8 @@ namespace dsp {
 // construct BiQuadFilter
 // b: quadratic polynomial for zeros
 // a: quadratic polynomial for poles
-BiQuadFilter::BiQuadFilter(
-    std::array<double,3>b,
-    std::array<double,3>a
-): x1{}, x2{}, y1{}, y2{}, b(b), a(a)
+BiQuadFilter::BiQuadFilter(std::array<double,3> b, std::array<double,3> a)
+: x1{}, x2{}, y1{}, y2{}, b{b}, a{a}
 {
 }
 

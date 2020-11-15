@@ -3,9 +3,10 @@
 
 namespace dsp {
 
-DirectForm1Filter::DirectForm1Filter(std::vector<double>b,
-                                     std::vector<double>a) :
-    x(b.size()), y(a.size()), b(b), a(a)
+using std::vector;
+
+DirectForm1Filter::DirectForm1Filter(vector<double> b, vector<double> a)
+: x(b.size()), y(a.size()), b{b}, a{a}
 {
 }
 
@@ -37,9 +38,8 @@ double DirectForm1Filter::ProcessSample(double x0)
     return y[0];
 }
 
-DirectForm2Filter::DirectForm2Filter(std::vector<double>b,
-                                     std::vector<double>a) :
-    w(std::max(b.size(), a.size())), b(b), a(a)
+DirectForm2Filter::DirectForm2Filter(vector<double> b, vector<double> a)
+: w(std::max(b.size(), a.size())), b{b}, a{a}
 {
 }
 
@@ -69,9 +69,8 @@ double DirectForm2Filter::ProcessSample(double x)
     return y;
 }
 
-DirectForm2TFilter::DirectForm2TFilter(std::vector<double>b,
-                                       std::vector<double>a) :
-    v(std::max(b.size(), a.size())), b(b), a(a)
+DirectForm2TFilter::DirectForm2TFilter(vector<double> b, vector<double> a)
+: v(std::max(b.size(), a.size())), b{b}, a{a}
 {
     // make a and b the same size for simplicity
     if (b.size() > a.size()) {

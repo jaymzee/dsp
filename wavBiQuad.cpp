@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-dsp::BiQuadFilter f({0.00425, 0.0, -0.00425}, {1.0, -1.98, 0.991});
+dsp::BiQuadFilter f{{0.00425, 0.0, -0.00425}, {1.0, -1.98, 0.991}};
 
 int main(int argc, char *argv[])
 {

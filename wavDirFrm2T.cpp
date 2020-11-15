@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-dsp::DirectForm2TFilter f({1.0, 0.4}, {1.0, 0.3, 0.3});
+dsp::DirectForm2TFilter f{{1.0, 0.4}, {1.0, 0.3, 0.3}};
 
 int main(int argc, char *argv[])
 {
