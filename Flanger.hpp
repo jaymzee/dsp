@@ -7,8 +7,8 @@ namespace dsp {
 class Flanger: public Filter {
     FractionalDelay w;  // delay line
     int N;              // length of delay line
-public:
     double T;           // sample period
+public:
     double rate;        // rate of flanger
     double phase;       // current phase of flanger (time)
 
