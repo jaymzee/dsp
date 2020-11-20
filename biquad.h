@@ -1,7 +1,7 @@
-#ifndef DSP_BIQUADFILTER_H_INCLUDED
-#define DSP_BIQUADFILTER_H_INCLUDED
+#ifndef DSP_BIQUAD_H_INCLUDED
+#define DSP_BIQUAD_H_INCLUDED
 
-#include "Filter.hpp"
+#include "filter.hpp"
 #include <array>
 
 /************************************************************************
@@ -32,13 +32,13 @@
 
 namespace dsp {
 
-class BiQuadFilter: public Filter {
+class BiQuad: public Filter {
     double x1, x2, y1, y2;
 public:
     std::array<double,3> b;  // b coefficients - feed forward
     std::array<double,3> a;  // a coefficients - feedback
 
-    BiQuadFilter(std::array<double,3> b, std::array<double,3> a);
+    BiQuad(std::array<double,3> b, std::array<double,3> a);
     double ProcessSample(double x); // process one sample through filter
 };
 

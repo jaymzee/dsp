@@ -1,19 +1,19 @@
-#include "CircularFilter.h"
+#include "circular.h"
 
 namespace dsp {
 
-CircularFilter::CircularFilter(int n)
+Circular::Circular(int n)
 : w_(n), offset{}, N{n}
 {
 }
 
 /*
- * CircularFilter::ProcessSample() process one sample
+ * Circular::ProcessSample() process one sample
  * x: input sample
  *
  * Return: output sample
  */
-double CircularFilter::ProcessSample(double x)
+double Circular::ProcessSample(double x)
 {
     double y, w0;
 

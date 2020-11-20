@@ -1,7 +1,7 @@
-#ifndef DSP_DIRECTFORMFILTER_H_INCLUDED
-#define DSP_DIRECTFORMFILTER_H_INCLUDED
+#ifndef DSP_DIRECTFORM_H_INCLUDED
+#define DSP_DIRECTFORM_H_INCLUDED
 
-#include "Filter.hpp"
+#include "filter.hpp"
 #include <vector>
 
 /* direct form filters
@@ -35,18 +35,18 @@ namespace dsp {
  *          └---|>-→(+)←-<|---┘
  *
  */
-class DirectForm1Filter: public Filter {
+class DirectForm1: public Filter {
     std::vector<double> x;  // delay line for input
     std::vector<double> y;  // delay line for output
 public:
     std::vector<double> b;  // b coefficients - feed forward
     std::vector<double> a;  // a coefficients - feedback
 
-    DirectForm1Filter(std::vector<double> b, std::vector<double> a);
+    DirectForm1(std::vector<double> b, std::vector<double> a);
     double ProcessSample(double x); // process one sample through filter
 };
 
-/* DirectfForm2Filter
+/* DirectfForm2
  *
  * Starting with the direct form I equation above:
  *
@@ -70,17 +70,17 @@ public:
  *          └---<|---┴---|>---┘
  *
  */
-class DirectForm2Filter: public Filter {
+class DirectForm2: public Filter {
     std::vector<double> w;  // delay line
 public:
     std::vector<double> b;  // b coefficients - feed forward
     std::vector<double> a;  // a coefficients - feedback
 
-    DirectForm2Filter(std::vector<double> b, std::vector<double> a);
+    DirectForm2(std::vector<double> b, std::vector<double> a);
     double ProcessSample(double x); // process one sample through filter
 };
 
-/* DirectForm1TFilter - transposed direct form I
+/* DirectForm1T - transposed direct form I
  *
  * Starting with the direct form I signal flow:
  *
@@ -102,7 +102,7 @@ public:
  *
  */
 
-/* DirectfForm2TFilter - transposed direct form II
+/* DirectfForm2T - transposed direct form II
  *
  * Starting with the direct form II signal flow:
  *
@@ -123,13 +123,13 @@ public:
  *          └--|>--→(+)←--<|--┘
  *
  */
-class DirectForm2TFilter: public Filter {
+class DirectForm2T: public Filter {
     std::vector<double> v;  // delay line
 public:
     std::vector<double> b;  // b coefficients - zeros
     std::vector<double> a;  // a coefficients - poles
 
-    DirectForm2TFilter(std::vector<double> b, std::vector<double> a);
+    DirectForm2T(std::vector<double> b, std::vector<double> a);
     double ProcessSample(double x); // process one sample through filter
 };
 

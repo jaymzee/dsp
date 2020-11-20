@@ -1,5 +1,5 @@
 #include "wave.h"
-#include "fractional_delay.h"
+#include "delayline.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -10,23 +10,23 @@ struct flanger
 {
     double rate;
     double phase;
-    struct fracdelay *delay;
+    struct delay *delay;
 };
 
 double flanger_sample(struct flanger *f, double x)
 {
-    struct fracdelay *delay = f->delay;
+    struct delay *delay = f->delay;
     const int N = delay->N;
     double y;
     double n;
 
     n = (N-1) * (0.5 * cos(2 * PI * f->rate * f->phase) + 0.5);
 
-    *fracdelay_w0(delay) = x;
+    *delay_w0(delay) = x;
 
-    y = 0.5 * fracdelay_w(delay, N / 2) + 0.5 * fracdelay_w(delay, n);
+    y = 0.5 * delay_w(delay, N / 2) + 0.5 * delay_w(delay, n);
 
-    fracdelay_dec(delay);
+    delay_dec(delay);
     f->phase += 1.0 / 44100.0;
 
     return y;
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     f.rate = 0.125;
     f.phase = 0.0;
-    f.delay = fracdelay_create(200);
+    f.delay = delay_create(200);
 
     return wave_filter(infile, outfile,
                        (filter_func)flanger_sample, &f, WAVE_PCM, 0.0);

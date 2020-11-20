@@ -1,9 +1,9 @@
-#include "DirectFormFilter.h"
-#include "Wave.hpp"
+#include "directform.h"
+#include "wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 
-dsp::DirectForm2Filter f{{1.0, 0.4}, {1.0, 0.3, 0.3}};
+dsp::DirectForm2T f{{1.0, 0.4}, {1.0, 0.3, 0.3}};
 
 int main(int argc, char *argv[])
 {
@@ -16,5 +16,5 @@ int main(int argc, char *argv[])
     infile = argv[1];
     outfile = argv[2];
 
-    return WaveFilter(infile, outfile, &f, WAVE_FLOAT, 0.0);
+    return FilterWav(infile, outfile, &f, WAVE_FLOAT, 0.0);
 }

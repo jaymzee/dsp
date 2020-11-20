@@ -1,4 +1,4 @@
-#include "canonical_filter.h"
+#include "canfltr.h"
 #include <stdlib.h>
 #include <string.h>
 

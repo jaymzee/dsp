@@ -1,5 +1,5 @@
 #include "wave.h"
-#include "canonical_filter.h"
+#include "canfltr.h"
 #include <stdio.h>
 #include <stdlib.h>
 

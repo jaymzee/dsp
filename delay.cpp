@@ -1,20 +1,20 @@
-#include "FractionalDelay.h"
+#include "delay.h"
 
 namespace dsp {
 
-FractionalDelay::FractionalDelay(int n)
+Delay::Delay(int n)
 : w(n), offset{}, N{n}
 {
 }
 
 /*
- * FractionalDelay::operator[](double) - interpolate tap[n]
+ * Delay::operator[](double) - interpolate tap[n]
  * n: index of delay line tap, must be >= 0 but may have a fractional part
  *    since there is a fractional part to n, linearly interpolate the samples
  *
  * Return: tap[n] (offset within and modulo wrap w)
  */
-double FractionalDelay::operator[](double n)
+double Delay::operator[](double n)
 {
     double w1, w2, f;
     int first = (int)n;

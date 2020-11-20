@@ -1,5 +1,5 @@
-#include "CircularFilter.h"
-#include "Wave.hpp"
+#include "circular.h"
+#include "wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 
@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
     const char *infile = argv[1];
     const char *outfile = argv[2];
 
-    dsp::CircularFilter f{5000};
+    dsp::Circular f{5000};
     f.b[1] = 0.4;
     f.b[3500] = 0.4;
     f.a[3000] = 0.6;
 
-    return WaveFilter(infile, outfile, &f, WAVE_PCM, 2.0);
+    return FilterWav(infile, outfile, &f, WAVE_PCM, 2.0);
 }

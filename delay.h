@@ -1,5 +1,5 @@
-#ifndef DSP_FRACTIONALDELAY_H_INCLUDED
-#define DSP_FRACTIONALDELAY_H_INCLUDED
+#ifndef DSP_DELAY_H_INCLUDED
+#define DSP_DELAY_H_INCLUDED
 
 #include <vector>
 
@@ -8,12 +8,12 @@ namespace dsp {
  * circular buffer implementation of a fractional delay line
  */
 
-class FractionalDelay {
+class Delay {
     std::vector<double> w;  /* delay line */
     int offset;             /* current start of buffer within w */
     int N;
 public:
-    FractionalDelay(int n);
+    Delay(int n);
     /* (advance delay line by one sample) */
     void Shift() { if (--offset < 0) offset += N; }
     /* (retreat delay line by one sample) */

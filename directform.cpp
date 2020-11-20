@@ -1,11 +1,11 @@
-#include "DirectFormFilter.h"
+#include "directform.h"
 #include <algorithm>
 
 namespace dsp {
 
 using std::vector;
 
-DirectForm1Filter::DirectForm1Filter(vector<double> b, vector<double> a)
+DirectForm1::DirectForm1(vector<double> b, vector<double> a)
 : x(b.size()), y(a.size()), b{b}, a{a}
 {
 }
@@ -15,7 +15,7 @@ DirectForm1Filter::DirectForm1Filter(vector<double> b, vector<double> a)
  *
  * Return: output sample
  */
-double DirectForm1Filter::ProcessSample(double x0)
+double DirectForm1::ProcessSample(double x0)
 {
     double yz = 0.0, yp = 0.0;  // partial sums
 
@@ -38,7 +38,7 @@ double DirectForm1Filter::ProcessSample(double x0)
     return y[0];
 }
 
-DirectForm2Filter::DirectForm2Filter(vector<double> b, vector<double> a)
+DirectForm2::DirectForm2(vector<double> b, vector<double> a)
 : w(std::max(b.size(), a.size())), b{b}, a{a}
 {
 }
@@ -48,7 +48,7 @@ DirectForm2Filter::DirectForm2Filter(vector<double> b, vector<double> a)
  *
  * Return: output sample
  */
-double DirectForm2Filter::ProcessSample(double x)
+double DirectForm2::ProcessSample(double x)
 {
     double y = 0.0;
     double w0 = x;
@@ -69,7 +69,7 @@ double DirectForm2Filter::ProcessSample(double x)
     return y;
 }
 
-DirectForm2TFilter::DirectForm2TFilter(vector<double> b, vector<double> a)
+DirectForm2T::DirectForm2T(vector<double> b, vector<double> a)
 : v(std::max(b.size(), a.size())), b{b}, a{a}
 {
     // make a and b the same size for simplicity
@@ -85,7 +85,7 @@ DirectForm2TFilter::DirectForm2TFilter(vector<double> b, vector<double> a)
  *
  * Return: output sample
  */
-double DirectForm2TFilter::ProcessSample(double x)
+double DirectForm2T::ProcessSample(double x)
 {
     const int M = v.size() - 1;
 

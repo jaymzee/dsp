@@ -1,11 +1,11 @@
-#include "Filter.hpp"
-#include "FractionalDelay.h"
+#include "filter.hpp"
+#include "delay.h"
 #include <cmath>
 
 namespace dsp {
 
 class Flanger: public Filter {
-    FractionalDelay w;  // delay line
+    Delay w;            // delay line
     int N;              // length of delay line
     double T;           // sample period
 public:

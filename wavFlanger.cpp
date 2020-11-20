@@ -1,5 +1,5 @@
-#include "Flanger.hpp"
-#include "Wave.hpp"
+#include "flanger.hpp"
+#include "wave.hpp"
 #include <cstdio>
 #include <cstdlib>
 
@@ -12,5 +12,5 @@ int main(int argc, char *argv[])
 
     dsp::Flanger f{200, 44100, 0.125};
 
-    return WaveFilter(argv[1], argv[2], &f, WAVE_PCM, 0.0);
+    return FilterWav(argv[1], argv[2], &f, WAVE_PCM, 0.0);
 }

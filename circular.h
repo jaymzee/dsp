@@ -1,7 +1,7 @@
-#ifndef DSP_CIRCULARFILTER_H_INCLUDED
-#define DSP_CIRCULARFILTER_H_INCLUDED
+#ifndef DSP_CIRCULAR_H_INCLUDED
+#define DSP_CIRCULAR_H_INCLUDED
 
-#include "Filter.hpp"
+#include "filter.hpp"
 #include <vector>
 #include <map>
 
@@ -16,7 +16,7 @@ namespace dsp {
  * decremented instead of moving values down through all the taps.
  * The offset is used to compute where w[0] actually is within the w_ buffer.
  */
-class CircularFilter: public Filter {
+class Circular: public Filter {
     std::vector<double> w_;     // delay line buffer
     int offset;                 // current start of buffer within w
     int N;                      // length of delay line
@@ -25,7 +25,7 @@ public:
     std::map<int, double> a;    // feedback coefficients
 
     // construct size n delay line
-    CircularFilter(int n);
+    Circular(int n);
     // advance delay line by one sample
     void Shift() { if (--offset < 0) offset += N; }
     // retreat delay line by one sample

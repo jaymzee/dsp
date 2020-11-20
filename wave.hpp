@@ -4,26 +4,26 @@
 extern "C" {
 #include "wave.h"
 }
-#include "Filter.hpp"
+#include "filter.hpp"
 
 namespace dsp {
 
 /* callback for wave_filter()
  */
-inline double WaveFilterProcessSample(Filter *f, double x) {
+inline double FilterWavProcessSample(Filter *f, double x) {
     return f->ProcessSample(x);
 }
 
-/* WaveFilter() C++ wrapper for wave_filter()
+/* FilterWav() C++ wrapper for wave_filter()
  * infile: filename of input wav file
  * outfile: filename of output wav file
  * format: output wav file format type
  * duration: length of time to use input wav file as the source
  */
-inline int WaveFilter(const char *infile, const char *outfile,
-                      Filter* f, int format, double duration) {
+inline int FilterWav(const char *infile, const char *outfile,
+                     Filter* f, int format, double duration) {
     return wave_filter(infile, outfile,
-                       (filter_func)WaveFilterProcessSample, f,
+                       (filter_func)FilterWavProcessSample, f,
                        format, duration);
 }
 

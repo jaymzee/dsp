@@ -1,5 +1,5 @@
-#ifndef DSP_CANONICAL_FILTER_H_INCLUDED
-#define DSP_CANONICAL_FILTER_H_INCLUDED
+#ifndef DSP_CANFLTR_H_INCLUDED
+#define DSP_CANFLTR_H_INCLUDED
 
 /* canonical filter (direct form II) for signal processing
  * a[0] should always be 1.0
